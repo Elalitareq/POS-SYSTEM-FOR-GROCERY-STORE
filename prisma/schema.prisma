@@ -1,0 +1,107 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  password     String
+  role         Role
+  actions      Action[]
+  lastModified DateTime @default(now())
+  synced       Boolean  @default(false)
+}
+
+enum Role {
+  SUPERADMIN
+  ADMIN
+  EMPLOYEE
+}
+
+model Product {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  description       String?
+  sku               String              @unique
+  categoryID        Int
+  inventoryCount    Int
+  regularPrice      Float
+  salePrice         Float
+  wholesalePrice    Float
+  costPrice         Float
+  batches           Batch[]
+  lastModified      DateTime            @default(now())
+  synced            Boolean             @default(false)
+  Category          Category?           @relation(fields: [categoryId], references: [id])
+  categoryId        Int?
+  TransactionDetail TransactionDetail[]
+}
+
+model Batch {
+  id           Int      @id @default(autoincrement())
+  product      Product  @relation(fields: [productId], references: [id])
+  productId    Int
+  receivedDate DateTime
+  expiryDate   DateTime
+  quantity     Int
+  costPrice    Float
+  lastModified DateTime @default(now())
+  synced       Boolean  @default(false)
+}
+
+model Category {
+  id           Int       @id @default(autoincrement())
+  name         String
+  description  String?
+  products     Product[]
+  lastModified DateTime  @default(now())
+  synced       Boolean   @default(false)
+}
+
+enum SaleType {
+  WHOLESALE
+  REGULAR
+}
+
+model Transaction {
+  id           Int                 @id @default(autoincrement())
+  date         DateTime            @default(now())
+  totalAmount  Float
+  customerId   Int?
+  employeeId   Int
+  saleType     SaleType
+  details      TransactionDetail[]
+  lastModified DateTime            @default(now())
+  synced       Boolean             @default(false)
+}
+
+model TransactionDetail {
+  id                Int         @id @default(autoincrement())
+  transactionId     Int
+  transaction       Transaction @relation(fields: [transactionId], references: [id])
+  productId         Int
+  product           Product     @relation(fields: [productId], references: [id])
+  quantity          Int
+  priceAtTimeOfSale Float
+  lastModified      DateTime    @default(now())
+  synced            Boolean     @default(false)
+}
+
+model Action {
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
+  description  String
+  actionType   String // For example, "CREATE", "UPDATE", "DELETE"
+  lastModified DateTime @default(now())
+  synced       Boolean  @default(false)
+}
