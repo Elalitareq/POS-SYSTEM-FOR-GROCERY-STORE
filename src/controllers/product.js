@@ -1,5 +1,5 @@
+import batchService from "../services/batch.js";
 import productService from "../services/productService.js";
-import batchService from "../services/batchService.js"; // Assuming you have a separate batch service
 
 // POST /products - Add a new product
 export async function addProduct(req, res) {
