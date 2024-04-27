@@ -8,7 +8,10 @@ export async function addProduct(req, res) {
 
     const newProduct = await productService.addProduct(productData);
 
-    const createdBatches = await createMultipleBatches(newProduct.id, batches);
+    const createdBatches = await batchService.createMultipleBatches(
+      newProduct.id,
+      batches
+    );
 
     res.status(201).json({
       message: "Product added successfully",

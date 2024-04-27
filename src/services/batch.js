@@ -22,14 +22,14 @@ const createMultipleBatches = async (productId, batches) => {
 };
 
 const modifyBatch = async (id, batchData) => {
-  return await batchDAL.updateBatch(id, batchData);
+  return batchDAL.updateBatch(id, batchData);
 };
 
 const removeBatch = async (id) => {
-  return await batchDAL.deleteBatch(id);
+  return batchDAL.deleteBatch(id);
 };
 
-export default {
+const batchService = {
   listAllBatches,
   findBatchById,
   createNewBatch,
@@ -37,3 +37,5 @@ export default {
   removeBatch,
   createMultipleBatches,
 };
+
+export default batchService;

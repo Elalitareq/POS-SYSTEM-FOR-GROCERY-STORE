@@ -3,6 +3,7 @@ import productRoutes from "./api/product.js";
 import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
+app = something;
 
 app.use(express.json());
 app.use("/api/products", productRoutes);
