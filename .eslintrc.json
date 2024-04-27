@@ -7,7 +7,7 @@
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest",
-    "sourceType": "commonjs"
+    "sourceType": "module"
   },
   "rules": {
     "no-var": "error",
@@ -26,7 +26,7 @@
     "no-extra-bind": "error",
     "no-extra-label": "error",
     "arrow-body-style": "off",
-    "prefer-arrow-callback": "off"
+    "prefer-arrow-callback": "warn"
 
     // add more rules here
   }
