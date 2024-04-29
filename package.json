@@ -14,8 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "@eslint/eslintrc": "^3.0.2",
-    "@eslint/js": "^9.1.1",
-    "eslint": "^9.1.1",
+    "@eslint/js": "^8.2.0",
+    "eslint": "^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.1",
     "globals": "^15.0.0",
@@ -24,6 +24,8 @@
   },
   "dependencies": {
     "@prisma/client": "^5.13.0",
-    "express": "^4.19.2"
+    "bcrypt": "^5.1.1",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
   }
 }
