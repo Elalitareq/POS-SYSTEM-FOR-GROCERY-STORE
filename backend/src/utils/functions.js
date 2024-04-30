@@ -5,3 +5,9 @@ export const tryCatch = (fn) => async (req, res, next) => {
     next(err);
   }
 };
+
+export const makeError = (message, statusCode) => {
+  const error = new Error(message);
+  error.statusCode = statusCode;
+  return error;
+};

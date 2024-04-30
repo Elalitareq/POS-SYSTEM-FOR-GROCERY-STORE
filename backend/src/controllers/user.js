@@ -1,31 +1,29 @@
 import userService from "../services/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { makeError } from "../utils/functions.js";
 
 async function addUser(req, res) {
-  try {
-    const { body } = req;
+  const { email, password, role, password2 } = req.body;
 
-    const hashPassword = {
-      ...body,
-      password: await bcrypt.hash(body.password, 10),
-    };
-
-    if (body != null && body.password != null) {
-      const newUser = await userService.createNewUser(hashPassword);
-      res.status(201).json({
-        message: "user added successfully",
-        newUser: newUser,
-      });
-    } else {
-      res.status(500).json({ message: "please check the require field" });
-    }
-  } catch (error) {
-    res.status(500).json({
-      message: "Failed to add user",
-      error: error.message,
-    });
+  if (!email || !password || !role) {
+    throw makeError("Please provide email, password and role", 400);
   }
+  if (password !== password2) {
+    throw makeError("Passwords do not match", 400);
+  }
+
+  const userWithHashPassword = {
+    email,
+    role,
+    password: await bcrypt.hash(password, 10),
+  };
+
+  const newUser = await userService.createNewUser(userWithHashPassword);
+  res.status(201).json({
+    message: "user added successfully",
+    newUser: newUser,
+  });
 }
 
 async function updateUser(req, res) {
@@ -82,40 +80,31 @@ async function removeUser(req, res) {
 }
 
 async function loginUser(req, res) {
-  try {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    const getTheUser = await userService.findUserByEmail(email);
-    if (email && password) {
-      if (bcrypt.compareSync(password, getTheUser.password)) {
-        const token = jwt.sign({ email }, process.env.JWT_SECRET, {
-          expiresIn: "1d",
-        });
-        return res.status(201).json({
-          token: token,
-          userData: getTheUser,
-          message: "user logged in successfully",
-        });
-      }
-      return res.status(500).json({
-        message: "email or password WRONG !!",
-      });
-    } else {
-      return res.status(500).json({
-        message:
-          "please provide the email and password of which user you want to logged in",
-      });
-    }
-  } catch (error) {
-    return res.status(500).json({
-      message: "Failed to login user",
-      error: error.message,
+  if (!email && !password) {
+    throw makeError("Please provide email and password", 400);
+  }
+
+  const user = await userService.findUserByEmail(email);
+  const { id } = user;
+  if (bcrypt.compareSync(password, user.password)) {
+    const token = jwt.sign({ email, id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+    return res.status(201).json({
+      token: token,
+      userData: user,
+      message: "user logged in successfully",
     });
   }
+  return res.status(500).json({
+    message: "email or password WRONG !!",
+  });
 }
 
 async function getAllUsers(_, res) {
-  const users = await userService.getAllUsers();
+  const users = await userService.listAllUsers();
   res.json(users);
 }
 

@@ -7,14 +7,18 @@ export const verifyToken = async (req, res, next) => {
   const token = authorization.split(" ")[1];
   try {
     const decoded = await jwt.verify(token, process.env.SECRET);
-    req.user = decoded;
+    const user = await userDal.getUserById(decoded.id);
+    if (!user) {
+      return res.send({ message: "Invalid token" });
+    }
+    req.user = user;
     next();
   } catch (err) {
     return res.send({ message: "Invalid token" });
   }
 };
 
-export const allowRoles = async (roles) => (req, res, next) => {
+export const allowRoles = (roles) => (req, res, next) => {
   if (roles.includes(req.user.role)) {
     return next();
   }

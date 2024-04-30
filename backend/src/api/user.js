@@ -6,8 +6,9 @@ import {
   addUser,
   updateUser,
   loginUser,
+  getAllUsers,
 } from "../controllers/user.js";
-import { allowRoles } from "../middleware/userPermission.js";
+import { allowRoles, verifyToken } from "../middleware/userPermission.js";
 import { tryCatch } from "../utils/functions.js";
 
 const router = Express.Router();
@@ -24,16 +25,18 @@ router.get("/user/:id", async (req, res) => {
   }
 });
 
-router.post("/create-user", addUser);
+router.post("/create-user", tryCatch(addUser));
 
 router.post(
   "/remove-user/:id",
+  verifyToken,
   allowRoles(["ADMIN", "SUPERADMIN"]),
   removeUser
 );
 
 router.post(
   "/modify-user/:id",
+  verifyToken,
   allowRoles(["ADMIN", "SUPERADMIN"]),
   updateUser
 );
