@@ -22,16 +22,18 @@ async function createUser(data) {
     });
 }
 
-async function updateUser(id, data) {
+async function updateUser(id, newData) {
+    const userId = parseInt(id);
     return await prisma.user.update({
-        where: { id },
-        data,
+        where: { id: userId },
+        data: newData,
     });
 }
 
 async function deleteUser(id) {
+    const userId = parseInt(id);
     return await prisma.user.delete({
-        where: { id },
+        where: { id: userId },
     });
 }
 
@@ -41,7 +43,7 @@ const userDAL = {
     createUser,
     updateUser,
     deleteUser,
-    getUserByEmail
+    getUserByEmail,
 };
 
 export default userDAL;

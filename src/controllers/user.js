@@ -1,5 +1,5 @@
 import userService from "../services/user.js";
-import bcrypt, { compare } from "bcrypt";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 async function addUser(req, res) {
@@ -43,10 +43,10 @@ async function updateUser(req, res) {
             });
         }
         if (body != null && body.password != null) {
-            const newUser = await userService.modifyUser(id, hashPassword);
+            const updateUser = await userService.modifyUser(id, hashPassword);
             res.status(201).json({
-                message: "user added successfully",
-                newUser: newUser,
+                message: "user updated successfully",
+                updateUser: updateUser,
             });
         } else {
             res.status(500).json({ message: "please check the require field" });

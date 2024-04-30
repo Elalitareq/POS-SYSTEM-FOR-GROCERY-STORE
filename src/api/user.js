@@ -1,7 +1,13 @@
 // Example Express route using the product DAL
 import userDal from "../dal/user.js";
 import Express from "express";
-import { removeUser, addUser, updateUser, loginUser } from "../controllers/user.js";
+import {
+    removeUser,
+    addUser,
+    updateUser,
+    loginUser,
+} from "../controllers/user.js";
+import { isSuperAdmin } from "../middleware/userPermission.js";
 
 const router = Express.Router();
 
@@ -24,8 +30,8 @@ router.get("/user/:id", async (req, res) => {
 });
 
 router.post("/create-user", addUser);
-router.delete("/remove-user/:id", removeUser);
-router.post("/modify-user/:id", updateUser);
+router.post("/remove-user/:id", isSuperAdmin, removeUser);
+router.post("/modify-user/:id", isSuperAdmin, updateUser);
 router.post("/login", loginUser);
 
 export default router;
