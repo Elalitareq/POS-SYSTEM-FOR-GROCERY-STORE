@@ -7,7 +7,7 @@ import {
   updateUser,
   loginUser,
 } from "../controllers/user.js";
-import { isSuperAdmin } from "../middleware/userPermission.js";
+import { allowRoles, isSuperAdmin } from "../middleware/userPermission.js";
 import { tryCatch } from "../utils/functions.js";
 
 const router = Express.Router();
@@ -25,8 +25,16 @@ router.get("/user/:id", async (req, res) => {
 });
 
 router.post("/create-user", addUser);
-router.post("/remove-user/:id", isSuperAdmin, removeUser);
-router.post("/modify-user/:id", isSuperAdmin, updateUser);
+router.post(
+  "/remove-user/:id",
+  allowRoles(["ADMIN", "SUPERADMIN"]),
+  removeUser
+);
+router.post(
+  "/modify-user/:id",
+  allowRoles(["ADMIN", "SUPERADMIN"]),
+  updateUser
+);
 router.post("/login", loginUser);
 
 export default router;
