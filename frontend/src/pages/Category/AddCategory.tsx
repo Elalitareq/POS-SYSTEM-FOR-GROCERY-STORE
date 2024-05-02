@@ -1,59 +1,78 @@
 import { useState } from "react";
 import Form from "../../components/form/Form";
+import BackButton from "../../components/backButton/BackButton";
+import Snackbar from "../../components/tostify/SnackBar";
+import { addCategory } from "../../utils/apisRequest";
 function AddCategory() {
-    const [addData, setAddData] = useState({});
-    console.log(addData);
+    const [addData, setAddData] = useState({
+        name: "",
+        description: "",
+    });
+
+    const [toast, setToast] = useState({
+        open: false,
+        severity: "",
+        message: "",
+    });
 
     const fields = [
         {
-            label: "Name",
+            label: "اﻹسم",
             name: "name",
             inputType: "text",
             require: true,
         },
-        { label: "Age", name: "age", inputType: "number", require: true },
         {
-            label: "Is student",
-            name: "IsStudent",
-            inputType: "checkbox",
-            options: ["Male", "Female", "Other"],
-
-            require: false,
-        },
-        {
-            label: "Gender",
-
-            name: "gender",
-            inputType: "radio",
-            options: ["Male", "Female", "Other"],
-            require: true,
-        },
-        {
-            label: "Country",
-            selectedValue: "USA",
-            name: "country",
-            inputType: "select",
-            options: ["USA", "Canada", "UK", "Australia"],
-            require: false,
-        },
-        {
-            label: "Date",
-            name: "date",
-            inputType: "date",
-            require: true,
-        },
-        {
-            label: "file/image",
-            name: "image",
-            inputType: "file",
+            label: "وصف",
+            name: "description",
+            inputType: "text",
             require: true,
         },
     ];
 
+    async function handleSubmit(e: any) {
+        e.preventDefault();
+        try {
+            if (!addData.name || !addData.description) {
+                setToast({
+                    open: true,
+                    message: "الرجاء تعبئت جميع الحقول .",
+                    severity: "error",
+                });
+            } else {
+                const dataAdded = await addCategory(addData);
+                if (dataAdded) {
+                    setToast({
+                        open: true,
+                        message: "تم ﻹنشاءبنجاح .",
+                        severity: "success",
+                    });
+                }
+            }
+        } catch (error: any) {
+            setToast({
+                open: true,
+                message: error.response.data.message,
+                severity: "success",
+            });
+        }
+    }
+
     return (
         <>
-            {" "}
-            <Form fields={fields} setAddData={setAddData}  textButtonSubmite="Add Category"/>
+            <BackButton navigatePath="/categories" />{" "}
+            <Snackbar
+                open={toast.open}
+                severity={toast.severity}
+                setOpen={setToast}
+                message={toast.message}
+            />{" "}
+            <Form
+                fields={fields}
+                setData={setAddData}
+                textButtonSubmite="Add Category"
+                onSubmit={handleSubmit}
+            />
         </>
     );
 }

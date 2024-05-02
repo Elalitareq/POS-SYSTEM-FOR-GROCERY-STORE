@@ -1,4 +1,4 @@
-import categoryDAL from "../dal/categoryDAL.js";
+import categoryDAL from "../dal/category.js";
 
 const listAllCategories = async () => {
   return await categoryDAL.getAllCategories();

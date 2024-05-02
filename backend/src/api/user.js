@@ -1,12 +1,12 @@
 // Example Express route using the product DAL
-import userDal from "../dal/user.js";
 import Express from "express";
 import {
-  removeUser,
-  addUser,
-  updateUser,
-  loginUser,
-  getAllUsers,
+    removeUser,
+    addUser,
+    updateUser,
+    loginUser,
+    getAllUsers,
+    getUserById,
 } from "../controllers/user.js";
 import { allowRoles, verifyToken } from "../middleware/userPermission.js";
 import { tryCatch } from "../utils/functions.js";
@@ -15,30 +15,27 @@ const router = Express.Router();
 
 router.get("/user", tryCatch(getAllUsers));
 
-router.get("/user/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const users = await userDal.getUserById(id);
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching users" });
-  }
-});
-
-router.post("/create-user", tryCatch(addUser));
+router.get("/user/:id", tryCatch(getUserById));
 
 router.post(
-  "/remove-user/:id",
-  verifyToken,
-  allowRoles(["ADMIN", "SUPERADMIN"]),
-  removeUser
+    "/create-user",
+    verifyToken,
+    allowRoles(["ADMIN", "SUPERADMIN"]),
+    tryCatch(addUser)
 );
 
 router.post(
-  "/modify-user/:id",
-  verifyToken,
-  allowRoles(["ADMIN", "SUPERADMIN"]),
-  updateUser
+    "/remove-user/:id",
+    verifyToken,
+    allowRoles(["ADMIN", "SUPERADMIN"]),
+    tryCatch(removeUser)
+);
+
+router.post(
+    "/modify-user/:id",
+    verifyToken,
+    allowRoles(["ADMIN", "SUPERADMIN"]),
+    tryCatch(updateUser)
 );
 
 router.post("/login", loginUser);
