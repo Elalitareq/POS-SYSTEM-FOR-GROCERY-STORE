@@ -66,3 +66,53 @@ export async function modifyCategory(id, data) {
     );
     return modifyCategory.data;
 }
+
+//product APIS
+export async function addProduct(data) {
+    const addProduct = await axios.post(
+        url + "/api/products/create-product",
+        data
+    );
+    return addProduct.data;
+}
+export async function getAllProduct(data) {
+    const getProduct = await axios.get(url + "/api/products/products", data);
+    return getProduct.data;
+}
+
+export async function getProductById(id) {
+    const getProduct = await axios.get(url + "/api/products/products/" + id);
+    return getProduct.data;
+}
+
+export async function modifyProduct(id, data) {
+    const modifyProduct = await axios.post(
+        url + "/api/products/modify-product/" + id,
+        data
+    );
+    return modifyProduct.data;
+}
+
+//batch
+
+export async function addBatch(data) {
+    const addBatch = await axios.post(url + "/api/batches/create-batch", data);
+    return addBatch.data;
+}
+export async function getAllBatch(data) {
+    const getBatch = await axios.get(url + "/api/batches/batches", data);
+    return getBatch.data;
+}
+
+export async function getBatchById(id) {
+    const getBatch = await axios.get(url + "/api/batches/batches/" + id);
+    return getBatch.data;
+}
+
+export async function modifyBatch(id, data) {
+    const modifyBatch = await axios.post(
+        url + "/api/batches/modify-batch/" + id,
+        data
+    );
+    return modifyBatch.data;
+}

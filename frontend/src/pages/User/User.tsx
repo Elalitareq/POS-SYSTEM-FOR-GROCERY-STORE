@@ -104,15 +104,16 @@ function User() {
             },
         },
     ];
-    if (!dataUser) return <></>;
     return (
         <Box>
-            <DataTable
-                columns={columns}
-                rows={dataUser}
-                buttonText="add user"
-                onClickAddButton={() => navigate("add-users")}
-            />
+            {dataUser !== null && (
+                <DataTable
+                    columns={columns}
+                    rows={dataUser}
+                    buttonText="add user"
+                    onClickAddButton={() => navigate("add-users")}
+                />
+            )}
         </Box>
     );
 }

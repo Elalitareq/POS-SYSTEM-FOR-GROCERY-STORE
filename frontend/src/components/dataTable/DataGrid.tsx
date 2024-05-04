@@ -5,14 +5,18 @@ interface DataProps {
     rows: object[];
     columns: any;
     buttonText: string;
-    onClickAddButton:any
+    onClickAddButton: any;
 }
 
-function DataTable({ rows, columns, buttonText ,onClickAddButton }: DataProps) {
+function DataTable({ rows, columns, buttonText, onClickAddButton }: DataProps) {
     return (
         <Box>
             <Box sx={{ display: "flex", justifyContent: "end" }}>
-                <Button variant="contained" sx={{ margin: "8px" }} onClick={onClickAddButton}>
+                <Button
+                    variant="contained"
+                    sx={{ margin: "8px" }}
+                    onClick={onClickAddButton}
+                >
                     {buttonText}
                 </Button>
             </Box>
@@ -22,7 +26,7 @@ function DataTable({ rows, columns, buttonText ,onClickAddButton }: DataProps) {
                 initialState={{
                     pagination: {
                         paginationModel: {
-                            pageSize: 5,
+                            pageSize: 10,
                         },
                     },
                 }}

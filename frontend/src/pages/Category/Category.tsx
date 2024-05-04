@@ -103,15 +103,16 @@ function Category() {
         },
     ];
 
-    if (!dataCategory) return <>as</>;
     return (
         <Box>
-            <DataTable
-                columns={columns}
-                rows={dataCategory}
-                buttonText="add category"
-                onClickAddButton={() => navigate("add-categories")}
-            />
+            {dataCategory !== null && (
+                <DataTable
+                    columns={columns}
+                    rows={dataCategory}
+                    buttonText="add category"
+                    onClickAddButton={() => navigate("add-categories")}
+                />
+            )}
         </Box>
     );
 }
