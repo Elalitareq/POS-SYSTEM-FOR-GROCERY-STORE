@@ -27,17 +27,16 @@ function Category() {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                isLoad?.setLoad(true);
-                const Categorys: any = await getAllCategories();
-                setTimeout(() => {
-                    setDataCategory(Categorys);
+            isLoad?.setLoad(true);
+            getAllCategories()
+                .then((res) => {
+                    setDataCategory(res);
                     isLoad?.setLoad(false);
-                }, 700);
-            } catch (error) {
-                console.log("Error fetching data:", error);
-                isLoad?.setLoad(false);
-            }
+                })
+                .catch((error) => {
+                    console.log("Error fetching data:", error);
+                    isLoad?.setLoad(false);
+                });
         };
         fetchData();
     }, []);

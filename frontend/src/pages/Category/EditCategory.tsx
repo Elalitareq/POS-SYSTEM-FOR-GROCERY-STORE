@@ -27,14 +27,12 @@ function EditCategory() {
             try {
                 isLoad?.setLoad(true);
                 const category: any = await getCategoryById(id);
-                setTimeout(() => {
-                    setEditData((prev) => ({
-                        ...prev,
-                        name: category.name,
-                        description: category.description,
-                    }));
-                    isLoad?.setLoad(false);
-                }, 500);
+                setEditData((prev) => ({
+                    ...prev,
+                    name: category.name,
+                    description: category.description,
+                }));
+                isLoad?.setLoad(false);
             } catch (error) {
                 console.log("Error fetching data:", error);
                 isLoad?.setLoad(false);

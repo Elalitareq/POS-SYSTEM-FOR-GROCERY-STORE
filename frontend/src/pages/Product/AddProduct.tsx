@@ -22,6 +22,8 @@ function AddProduct() {
     const isLoad = useContext(LoaderContext);
 
     const [categories, setCategories] = useState(null);
+    console.log(categories)
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,6 +31,7 @@ function AddProduct() {
                 if (!categories) {
                     isLoad?.setLoad(true);
                 }
+
                 const category: any = await getAllCategories();
                 let i;
                 for (i = 0; i < category.length; i++) {
@@ -38,9 +41,9 @@ function AddProduct() {
                     delete category[i]["id"];
                 }
                 setCategories(category);
-                setTimeout(() => {
-                    isLoad?.setLoad(false);
-                }, 500);
+                
+                isLoad?.setLoad(false);
+
             } catch (error) {
                 console.log("Error fetching data:", error);
                 isLoad?.setLoad(false);

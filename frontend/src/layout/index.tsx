@@ -192,7 +192,12 @@ export default function PersistentDrawerLeft() {
                     ))}
                 </List>
             </Drawer>
-            <Main sx={{ width: "100%" }} open={open}>
+            <Main
+                sx={{
+                    width: open ? `calc(100% - ${drawerWidth}px)` : "100%",
+                }}
+                open={open}
+            >
                 {isLoad && <Loader />}
                 <LoaderContext.Provider value={{ setLoad }}>
                     <Outlet />

@@ -56,10 +56,7 @@ function EditProduct() {
                 setCategories(category);
                 const { synced, lastModified, Category, id, ...rest } = product;
                 setEditData(rest);
-
-                setTimeout(() => {
-                    isLoad?.setLoad(false);
-                }, 500);
+                isLoad?.setLoad(false);
             } catch (error) {
                 console.log("Error fetching data:", error);
                 isLoad?.setLoad(false);

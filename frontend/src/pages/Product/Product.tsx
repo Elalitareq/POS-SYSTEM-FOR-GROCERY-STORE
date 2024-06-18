@@ -52,19 +52,20 @@ function Product() {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                if (!dataProduct) {
-                    isLoad?.setLoad(true);
-                }
-                const Products: any = await getAllProduct();
-                setDataProduct(Products);
-                setTimeout(() => {
-                    isLoad?.setLoad(false);
-                }, 700);
-            } catch (error) {
-                console.log("Error fetching data:", error);
-                isLoad?.setLoad(false);
+            if (!dataProduct) {
+                isLoad?.setLoad(true);
             }
+            getAllProduct()
+                .then((res) => {
+                    setDataProduct(res);
+                    if (res) {
+                        isLoad?.setLoad(false);
+                    }
+                })
+                .catch((error) => {
+                    console.log("Error fetching data:", error);
+                    isLoad?.setLoad(false);
+                });
         };
         fetchData();
     }, []);

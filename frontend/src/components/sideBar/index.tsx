@@ -138,14 +138,14 @@ export default function ResponsiveDrawer(props: Props) {
       <CssBaseline />
       <AppBar
         position="fixed"
-        // sx={{
-        //     width: { sm: `calc(100% - ${drawerWidth}px)` },
-        //     ml: { sm: `${drawerWidth}px` },
-        // }}
         sx={{
-          width: { sm: `100%` },
-          ml: { sm: `100%` },
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            ml: { sm: `${drawerWidth}px` },
         }}
+        // sx={{
+        //   width: { sm: `100%` },
+        //   ml: { sm: `100%` },
+        // }}
       >
         <Toolbar>
           <IconButton
