@@ -1,4 +1,4 @@
-import productDAL from "../dal/product.js";
+import productDAL from '../dal/product.js';
 
 async function listAllProducts() {
   return await productDAL.getAllProducts();
