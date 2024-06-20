@@ -23,6 +23,7 @@ import {
   Person,
   ScreenLockPortrait,
 } from "@mui/icons-material";
+import useLinks from "../../hooks/useLinks";
 
 const drawerWidth = 240;
 
@@ -38,6 +39,7 @@ export default function ResponsiveDrawer(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const { links } = useLinks();
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -53,36 +55,6 @@ export default function ResponsiveDrawer(props: Props) {
       setMobileOpen(!mobileOpen);
     }
   };
-
-  const links = [
-    {
-      link: "/products",
-      name: "Product",
-      icon: <AddBoxRounded />,
-    },
-    {
-      link: "/categories",
-      name: "Category",
-      icon: <ScreenLockPortrait />,
-    },
-
-    {
-      link: "transactions",
-      name: "Transaction",
-      icon: <CurrencyExchange />,
-    },
-
-    {
-      link: "actions",
-      name: "Action",
-      icon: <History />,
-    },
-    {
-      link: "users",
-      name: "User",
-      icon: <Person />,
-    },
-  ];
 
   const drawer = (
     <div>
@@ -139,8 +111,8 @@ export default function ResponsiveDrawer(props: Props) {
       <AppBar
         position="fixed"
         sx={{
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
-            ml: { sm: `${drawerWidth}px` },
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
         }}
         // sx={{
         //   width: { sm: `100%` },

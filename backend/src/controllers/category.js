@@ -7,7 +7,7 @@ export async function addCategory(req, res) {
   if (newCategory) {
     res.status(201).json({
       message: 'category created succesfuly',
-      newCategory: newCategory,
+      newCategory,
     });
   } else {
     makeError('failed to create', 400);
@@ -21,7 +21,7 @@ export async function editCategory(req, res) {
   if (modifyCategory) {
     res.status(201).json({
       message: 'category modified succesfuly',
-      modifyCategory: modifyCategory,
+      modifyCategory,
     });
   } else {
     makeError('failed to modify', 400);

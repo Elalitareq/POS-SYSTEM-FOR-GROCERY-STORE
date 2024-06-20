@@ -1,31 +1,31 @@
 import prisma from '../utils/prisma.js';
 
 async function getAllUsers() {
-  return await prisma.user.findMany();
+  return prisma.user.findMany();
 }
 
 async function getUserById(id) {
   const userId = parseInt(id);
-  return await prisma.user.findUnique({
+  return prisma.user.findUnique({
     where: { id: userId },
   });
 }
 
-async function getUserByEmail(email) {
-  return await prisma.user.findUnique({
-    where: { email: email },
+async function getUserByUserName(userName) {
+  return prisma.user.findUnique({
+    where: { userName },
   });
 }
 
 async function createUser(data) {
-  return await prisma.user.create({
+  return prisma.user.create({
     data,
   });
 }
 
 async function updateUser(id, newData) {
   const userId = parseInt(id);
-  return await prisma.user.update({
+  return prisma.user.update({
     where: { id: userId },
     data: newData,
   });
@@ -33,7 +33,7 @@ async function updateUser(id, newData) {
 
 async function deleteUser(id) {
   const userId = parseInt(id);
-  return await prisma.user.delete({
+  return prisma.user.delete({
     where: { id: userId },
   });
 }
@@ -44,7 +44,7 @@ const userDAL = {
   createUser,
   updateUser,
   deleteUser,
-  getUserByEmail,
+  getUserByUserName,
 };
 
 export default userDAL;

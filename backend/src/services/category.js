@@ -1,24 +1,14 @@
 import categoryDAL from '../dal/category.js';
 
-const listAllCategories = async () => {
-  return await categoryDAL.getAllCategories();
-};
+const listAllCategories = async () => await categoryDAL.getAllCategories();
 
-const findCategoryById = async id => {
-  return await categoryDAL.getCategoryById(id);
-};
+const findCategoryById = async (id) => await categoryDAL.getCategoryById(id);
 
-const createNewCategory = async categoryData => {
-  return await categoryDAL.createCategory(categoryData);
-};
+const createNewCategory = async (categoryData) => await categoryDAL.createCategory(categoryData);
 
-const modifyCategory = async (id, categoryData) => {
-  return await categoryDAL.updateCategory(id, categoryData);
-};
+const modifyCategory = async (id, categoryData) => await categoryDAL.updateCategory(id, categoryData);
 
-const removeCategory = async id => {
-  return await categoryDAL.deleteCategory(id);
-};
+const removeCategory = async (id) => await categoryDAL.deleteCategory(id);
 
 export default {
   listAllCategories,

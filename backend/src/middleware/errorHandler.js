@@ -3,7 +3,7 @@ function errorHandler(err, req, res, next) {
   const statusCode = err.statusCode || 500;
   res.status(statusCode).json({
     status: 'error',
-    statusCode: statusCode,
+    statusCode,
     message: err.message,
   });
 }

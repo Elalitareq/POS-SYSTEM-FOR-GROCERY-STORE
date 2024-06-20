@@ -9,10 +9,22 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["prettier"],
-
+  "plugins": ["prettier", "import"],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        "printWidth": 80,
+        "tabWidth": 2,
+        "useTabs": false,
+        "semi": true,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "bracketSpacing": true,
+        "arrowParens": "always",
+        "endOfLine": "lf"
+      }
+    ],
     "no-var": "error",
     "no-unused-vars": "warn",
     "no-console": "warn",
@@ -29,8 +41,17 @@
     "no-extra-bind": "error",
     "no-extra-label": "error",
     "arrow-body-style": "off",
-    "prefer-arrow-callback": "warn"
-
-    // add more rules here
+    "prefer-arrow-callback": "warn",
+    "import/extensions": [
+      "warn",
+      "ignorePackages",
+      {
+        "js": "always",
+        "mjs": "always",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
   }
 }

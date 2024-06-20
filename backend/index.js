@@ -1,10 +1,10 @@
 import express from 'express';
-import productRoutes from './api/product.js';
-import userRoutes from './api/user.js';
-import categoryRoutes from './api/category.js';
-import errorHandler from './middleware/errorHandler.js';
 import cors from 'cors';
-import batchRoutes from './api/batch.js';
+import productRoutes from './src/api/product.js';
+import userRoutes from './src/api/user.js';
+import categoryRoutes from './src/api/category.js';
+import errorHandler from './src/middleware/errorHandler.js';
+import batchRoutes from './src/api/batch.js';
 
 const app = express();
 

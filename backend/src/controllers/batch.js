@@ -7,7 +7,7 @@ export async function addBatch(req, res) {
   if (newBatch) {
     res.status(201).json({
       message: 'batch created succesfuly',
-      newBatch: newBatch,
+      newBatch,
     });
   } else {
     makeError('failed to create', 400);
@@ -21,7 +21,7 @@ export async function editBatch(req, res) {
   if (modifyBatch) {
     res.status(201).json({
       message: 'batch modified succesfuly',
-      modifyBatch: modifyBatch,
+      modifyBatch,
     });
   } else {
     makeError('failed to modify', 400);

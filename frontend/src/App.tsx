@@ -19,50 +19,44 @@ import UserIndex from "./pages/User/UserIndex";
 import AddUser from "./pages/User/AddUser";
 import EditUser from "./pages/User/EditUser";
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
+import { SnackbarProvider } from "notistack";
 
 function App() {
-    return (
-        <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route element={<AuthOutlet fallbackPath="/login" />}>
-                <Route path="/" element={<Layout />}>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="products" element={<ProductIndex />}>
-                        <Route index element={<Product />} />
-                        <Route path="add-products" element={<AddProduct />} />
-                        <Route
-                            path="edit-products/:id"
-                            element={<EditProduct />}
-                        />
-                    </Route>
-                    <Route path="categories" element={<CategoryIndex />}>
-                        <Route index element={<Category />} />
-                        <Route
-                            path="add-categories"
-                            element={<AddCategory />}
-                        />
-                        <Route
-                            path="edit-categories/:id"
-                            element={<EditCategory />}
-                        />
-                    </Route>
-
-                    <Route path="batch" element={<Batch />} />
-                    <Route
-                        path="transaction-details"
-                        element={<TransactionDetails />}
-                    />
-                    <Route path="transactions" element={<Transaction />} />
-                    <Route path="users" element={<UserIndex />}>
-                        <Route index element={<User />} />
-                        <Route path="add-users" element={<AddUser />} />
-                        <Route path="edit-users/:id" element={<EditUser />} />
-                    </Route>
-                    <Route path="actions" element={<Action />} />
-                </Route>
+  return (
+    <SnackbarProvider maxSnack={3}>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route element={<AuthOutlet fallbackPath="/login" />}>
+          <Route path="/" element={<Layout />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="products" element={<ProductIndex />}>
+              <Route index element={<Product />} />
+              <Route path="add-products" element={<AddProduct />} />
+              <Route path="edit-products/:id" element={<EditProduct />} />
             </Route>
-        </Routes>
-    );
+            <Route path="categories" element={<CategoryIndex />}>
+              <Route index element={<Category />} />
+              <Route path="add-categories" element={<AddCategory />} />
+              <Route path="edit-categories/:id" element={<EditCategory />} />
+            </Route>
+
+            <Route path="batch" element={<Batch />} />
+            <Route
+              path="transaction-details"
+              element={<TransactionDetails />}
+            />
+            <Route path="transactions" element={<Transaction />} />
+            <Route path="users" element={<UserIndex />}>
+              <Route index element={<User />} />
+              <Route path="add-users" element={<AddUser />} />
+              <Route path="edit-users/:id" element={<EditUser />} />
+            </Route>
+            <Route path="actions" element={<Action />} />
+          </Route>
+        </Route>
+      </Routes>
+    </SnackbarProvider>
+  );
 }
 
 export default App;

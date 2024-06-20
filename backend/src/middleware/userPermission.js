@@ -1,26 +1,26 @@
-import userDAL from '../dal/user.js';
 import jwt from 'jsonwebtoken';
+import userDAL from '../dal/user.js';
 
 export const verifyToken = async (req, res, next) => {
-  if (!req.headers['authorization']) {
+  if (!req.headers.authorization) {
     return res.send({ message: 'Token is required' });
   }
 
-  const token = req.headers['authorization'].split(' ')[1];
+  const token = req.headers.authorization.split(' ')[1];
   try {
-    const decoded = jwt.verify(token, process.env.SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await userDAL.getUserById(decoded.id);
     if (!user) {
       return res.send({ message: 'Invalid token' });
     }
     req.user = user;
-    next();
+    return next();
   } catch (err) {
     return res.send({ message: 'Invalid token' });
   }
 };
 
-export const allowRoles = roles => (req, res, next) => {
+export const allowRoles = (roles) => (req, res, next) => {
   if (roles.includes(req.user.role)) {
     return next();
   }

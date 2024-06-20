@@ -12,12 +12,15 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import { useNavigate } from "react-router-dom";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
   const signIn = useSignIn();
   const navigate = useNavigate();
+  const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
 
   const url = process.env.REACT_APP_API_URL;
 
@@ -25,7 +28,7 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const loginAth = {
-      email: data.get("email"),
+      userName: data.get("userName"),
       password: data.get("password"),
     };
 
@@ -40,7 +43,7 @@ export default function SignUp() {
           type: "Bearer",
         },
         userState: {
-          email: userData.email,
+          userName: userData.userName,
           id: userData.id,
           role: userData.role,
         },
@@ -54,26 +57,38 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container
+        component="main"
+        maxWidth="xs"
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            height: "100%",
+            justifyContent: "center",
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Login{" "}
+            تعاونية جابر
           </Typography>
           <Box
             component="form"
             noValidate
             onSubmit={handleSubmit}
+            style={{ height: "100%" }}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
@@ -81,10 +96,10 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id="userName"
+                  label="اسم المستخدم"
+                  name="userName"
+                  autoComplete="userName"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -92,10 +107,21 @@ export default function SignUp() {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
-                  type="password"
+                  label="كلمة المرور"
+                  type={isPasswordVisible ? "text" : "password"}
                   id="password"
-                  autoComplete="new-password"
+                  autoComplete="password"
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton
+                        onClick={() => {
+                          setIsPasswordVisible(!isPasswordVisible);
+                        }}
+                      >
+                        {isPasswordVisible ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    ),
+                  }}
                 />
               </Grid>
             </Grid>
@@ -105,7 +131,7 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 6, mb: 2 }}
             >
-              Sign In
+              تسجيل الدخول
             </Button>
           </Box>
         </Box>

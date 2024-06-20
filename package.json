@@ -1,0 +1,20 @@
+{
+  "name": "grow-tech-pos",
+  "version": "1.0.0",
+  "description": "Your Electron app",
+  "main": "main.js",
+  "scripts": {
+    "start": "concurrently \"npm run start:frontend\" \"npm run electron\"",
+    "start:frontend": "cd frontend && npm start",
+    "start:backend": "cd backend && npm start",
+    "electron": "electron .",
+    "build": "cd frontend && npm run build",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "electron": "^31.0.2",
+    "electron-builder": "^24.13.3",
+    "electron-reload": "2.0.0-alpha.1"
+  }
+}

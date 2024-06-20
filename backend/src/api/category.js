@@ -1,5 +1,4 @@
 import Express from 'express';
-import { tryCatch } from '../utils/functions.js';
 import {
   addCategory,
   getAllCategory,
@@ -7,6 +6,7 @@ import {
   editCategory,
   removeCategory,
 } from '../controllers/category.js';
+import { tryCatch } from '../utils/functions.js';
 
 const router = Express.Router();
 

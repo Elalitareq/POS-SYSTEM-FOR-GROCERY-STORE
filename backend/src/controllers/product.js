@@ -10,7 +10,7 @@ export async function addProduct(req, res) {
 
     const createdBatches = await batchService.createMultipleBatches(
       newProduct.id,
-      batches
+      batches,
     );
 
     res.status(201).json({
