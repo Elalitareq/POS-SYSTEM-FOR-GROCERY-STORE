@@ -23,6 +23,7 @@ import {
     History,
     Person,
     ProductionQuantityLimits,
+    Satellite,
 } from "@mui/icons-material";
 import Loader from "../components/loader";
 
@@ -91,6 +92,11 @@ const links = [
         link: "/products",
         name: "منتجات",
         icon: <ProductionQuantityLimits />,
+    },
+    {
+        link: "/sales",
+        name: "مبيعات",
+        icon: <Satellite />,
     },
     {
         link: "/categories",
@@ -195,6 +201,7 @@ export default function PersistentDrawerLeft() {
             <Main
                 sx={{
                     width: open ? `calc(100% - ${drawerWidth}px)` : "100%",
+                    transition: "0.2s all",
                 }}
                 open={open}
             >

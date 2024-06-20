@@ -17,104 +17,115 @@ import Toolbar from "@mui/material/Toolbar";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  AddBoxRounded,
-  CurrencyExchange,
-  History,
-  Person,
-  ScreenLockPortrait,
+    AddBoxRounded,
+    CurrencyExchange,
+    History,
+    Person,
+    Satellite,
+    ScreenLockPortrait,
 } from "@mui/icons-material";
+import Sales from "../../pages/Sales/Sales";
 
 const drawerWidth = 240;
 
 interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * Remove this when copying and pasting into your project.
-   */
-  window?: () => Window;
+    /**
+     * Injected by the documentation to work in an iframe.
+     * Remove this when copying and pasting into your project.
+     */
+    window?: () => Window;
 }
 
 export default function ResponsiveDrawer(props: Props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
+    const { window } = props;
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
 
-  const handleDrawerClose = () => {
-    setIsClosing(true);
-    setMobileOpen(false);
-  };
+    const handleDrawerClose = () => {
+        setIsClosing(true);
+        setMobileOpen(false);
+    };
 
-  const handleDrawerTransitionEnd = () => {
-    setIsClosing(false);
-  };
+    const handleDrawerTransitionEnd = () => {
+        setIsClosing(false);
+    };
 
-  const handleDrawerToggle = () => {
-    if (!isClosing) {
-      setMobileOpen(!mobileOpen);
-    }
-  };
+    const handleDrawerToggle = () => {
+        if (!isClosing) {
+            setMobileOpen(!mobileOpen);
+        }
+    };
 
-  const links = [
-    {
-      link: "/products",
-      name: "Product",
-      icon: <AddBoxRounded />,
-    },
-    {
-      link: "/categories",
-      name: "Category",
-      icon: <ScreenLockPortrait />,
-    },
+    const links = [
+        {
+            link: "/products",
+            name: "Product",
+            icon: <AddBoxRounded />,
+        },
+        {
+            link: "/categories",
+            name: "Category",
+            icon: <ScreenLockPortrait />,
+        },
+        {
+            link: "/sales",
+            name: "Sales",
+            icon: <Satellite />,
+        },
 
-    {
-      link: "transactions",
-      name: "Transaction",
-      icon: <CurrencyExchange />,
-    },
+        {
+            link: "transactions",
+            name: "Transaction",
+            icon: <CurrencyExchange />,
+        },
 
-    {
-      link: "actions",
-      name: "Action",
-      icon: <History />,
-    },
-    {
-      link: "users",
-      name: "User",
-      icon: <Person />,
-    },
-  ];
+        {
+            link: "actions",
+            name: "Action",
+            icon: <History />,
+        },
+        {
+            link: "users",
+            name: "User",
+            icon: <Person />,
+        },
+    ];
 
-  const drawer = (
-    <div>
-      <Toolbar />
-      <Divider />
-      <List>
-        {links.map((eachLink, index) => (
-          <Link
-            to={eachLink.link}
-            style={{
-              display: "flex",
-              textDecoration: "none",
-            }}
-          >
-            <ListItem key={eachLink.name} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText
-                  primary={eachLink.name}
-                  style={{
-                    color: "#757575",
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-        ))}
-      </List>
-      <Divider />
-      {/* <List>
+    const drawer = (
+        <div>
+            <Toolbar />
+            <Divider />
+            <List>
+                {links.map((eachLink, index) => (
+                    <Link
+                        to={eachLink.link}
+                        style={{
+                            display: "flex",
+                            textDecoration: "none",
+                        }}
+                    >
+                        <ListItem key={eachLink.name} disablePadding>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    {index % 2 === 0 ? (
+                                        <InboxIcon />
+                                    ) : (
+                                        <MailIcon />
+                                    )}
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={eachLink.name}
+                                    style={{
+                                        color: "#757575",
+                                    }}
+                                />
+                            </ListItemButton>
+                        </ListItem>
+                    </Link>
+                ))}
+            </List>
+            <Divider />
+            {/* <List>
                 {["All mail", "Trash", "Spam"].map((text, index) => (
                     <ListItem key={text} disablePadding>
                         <ListItemButton>
@@ -126,78 +137,78 @@ export default function ResponsiveDrawer(props: Props) {
                     </ListItem>
                 ))}
             </List> */}
-    </div>
-  );
+        </div>
+    );
 
-  // Remove this const when copying and pasting into your project.
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+    // Remove this const when copying and pasting into your project.
+    const container =
+        window !== undefined ? () => window().document.body : undefined;
 
-  return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
-            ml: { sm: `${drawerWidth}px` },
-        }}
-        // sx={{
-        //   width: { sm: `100%` },
-        //   ml: { sm: `100%` },
-        // }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onTransitionEnd={handleDrawerTransitionEnd}
-          onClose={handleDrawerClose}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-    </Box>
-  );
+    return (
+        <Box sx={{ display: "flex" }}>
+            <CssBaseline />
+            <AppBar
+                position="fixed"
+                sx={{
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    ml: { sm: `${drawerWidth}px` },
+                }}
+                // sx={{
+                //   width: { sm: `100%` },
+                //   ml: { sm: `100%` },
+                // }}
+            >
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{ mr: 2, display: { sm: "none" } }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
+            <Box
+                component="nav"
+                sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                aria-label="mailbox folders"
+            >
+                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+                <Drawer
+                    container={container}
+                    variant="temporary"
+                    open={mobileOpen}
+                    onTransitionEnd={handleDrawerTransitionEnd}
+                    onClose={handleDrawerClose}
+                    ModalProps={{
+                        keepMounted: true, // Better open performance on mobile.
+                    }}
+                    sx={{
+                        display: { xs: "block", sm: "none" },
+                        "& .MuiDrawer-paper": {
+                            boxSizing: "border-box",
+                            width: drawerWidth,
+                        },
+                    }}
+                >
+                    {drawer}
+                </Drawer>
+                <Drawer
+                    variant="permanent"
+                    sx={{
+                        display: { xs: "none", sm: "block" },
+                        "& .MuiDrawer-paper": {
+                            boxSizing: "border-box",
+                            width: drawerWidth,
+                        },
+                    }}
+                    open
+                >
+                    {drawer}
+                </Drawer>
+            </Box>
+        </Box>
+    );
 }

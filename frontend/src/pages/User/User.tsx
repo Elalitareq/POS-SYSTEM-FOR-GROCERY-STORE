@@ -28,17 +28,16 @@ function User() {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                isLoad?.setLoad(true);
-                const users: any = await getAllUsers();
-                setTimeout(() => {
-                    setDataUser(users);
+            isLoad?.setLoad(true);
+            getAllUsers()
+                .then((res) => {
+                    setDataUser(res);
                     isLoad?.setLoad(false);
-                }, 500);
-            } catch (error) {
-                console.log("Error fetching data:", error);
-                isLoad?.setLoad(false);
-            }
+                })
+                .catch((error) => {
+                    console.log("Error fetching data:", error);
+                    isLoad?.setLoad(false);
+                });
         };
         fetchData();
     }, []);
@@ -110,7 +109,7 @@ function User() {
                 <DataTable
                     columns={columns}
                     rows={dataUser}
-                    buttonText="add user"
+                    buttonText="زيادة مستخدم"
                     onClickAddButton={() => navigate("add-users")}
                 />
             )}
