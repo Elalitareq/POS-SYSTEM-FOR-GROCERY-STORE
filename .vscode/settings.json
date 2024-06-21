@@ -1,3 +1,8 @@
 {
-    "javascript.preferences.importModuleSpecifierEnding": "auto"
+  "javascript.preferences.importModuleSpecifierEnding": "auto",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
+  "editor.formatOnSave": true,
+  "eslint.validate": ["javascript"]
 }

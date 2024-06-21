@@ -1,11 +1,11 @@
+/* eslint-disable no-undef */
 // src/prismaClient.js
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
-// eslint-disable-next-line import/no-mutable-exports
 let prisma;
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   prisma = new PrismaClient();
 } else {
   // Ensure the Prisma client is reused during hot-reloading

@@ -1,8 +1,8 @@
 // src/middleware/errorHandler.js
-function errorHandler(err, req, res, next) {
+function errorHandler(err, req, res) {
   const statusCode = err.statusCode || 500;
   res.status(statusCode).json({
-    status: 'error',
+    status: "error",
     statusCode,
     message: err.message,
   });
