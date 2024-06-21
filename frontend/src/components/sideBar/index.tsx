@@ -16,13 +16,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  AddBoxRounded,
-  CurrencyExchange,
-  History,
-  Person,
-  ScreenLockPortrait,
-} from "@mui/icons-material";
+
 import useLinks from "../../hooks/useLinks";
 
 const drawerWidth = 240;

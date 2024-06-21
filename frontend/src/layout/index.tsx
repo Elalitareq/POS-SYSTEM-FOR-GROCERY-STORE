@@ -175,6 +175,7 @@ export default function PersistentDrawerLeft() {
       <Main
         sx={{
           width: open ? `calc(100% - ${drawerWidth}px)` : "100%",
+          transition: "0.2s all",
         }}
         open={open}
       >

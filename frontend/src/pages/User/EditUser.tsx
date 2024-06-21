@@ -27,14 +27,12 @@ function EditUser() {
       try {
         isLoad?.setLoad(true);
         const users: any = await getUserById(id);
-        setTimeout(() => {
-          setEditData((prev) => ({
-            ...prev,
-            userName: users.userName,
-            role: users.role,
-          }));
-          isLoad?.setLoad(false);
-        }, 500);
+        setEditData((prev) => ({
+          ...prev,
+          email: users.email,
+          role: users.role,
+        }));
+        isLoad?.setLoad(false);
       } catch (error) {
         console.log("Error fetching data:", error);
         isLoad?.setLoad(false);

@@ -20,6 +20,7 @@ import AddUser from "./pages/User/AddUser";
 import EditUser from "./pages/User/EditUser";
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
 import { SnackbarProvider } from "notistack";
+import Sales from "./pages/Sales/Sales";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route element={<AuthOutlet fallbackPath="/login" />}>
           <Route path="/" element={<Layout />}>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/sales" element={<Sales />} />
             <Route path="products" element={<ProductIndex />}>
               <Route index element={<Product />} />
               <Route path="add-products" element={<AddProduct />} />

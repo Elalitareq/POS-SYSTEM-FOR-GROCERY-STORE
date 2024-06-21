@@ -5,6 +5,7 @@ import {
   History,
   Person,
   ProductionQuantityLimits,
+  Satellite,
 } from "@mui/icons-material";
 
 export const links = [
@@ -16,9 +17,14 @@ export const links = [
   },
   {
     link: "/categories",
-    name: "فئات",
+    name: "الآصناف",
     icon: Category,
     isEmployeeVisible: true,
+  },
+  {
+    link: "/sales",
+    name: "مبيعات",
+    icon: Satellite,
   },
 
   {

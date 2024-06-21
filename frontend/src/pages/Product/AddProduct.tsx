@@ -10,7 +10,7 @@ import { enqueueSnackbar } from "notistack";
 function AddProduct() {
   const { id }: number | any = useAuthUser();
 
-  const [product, setproduct] = useState({
+  const [product, setProduct] = useState({
     categoryId: "",
     userId: id,
   });
@@ -88,7 +88,7 @@ function AddProduct() {
       require: true,
     },
     {
-      label: "سعر البيع",
+      label: "سعر العرض",
       name: "salePrice",
       inputType: "number",
       require: true,
@@ -171,7 +171,7 @@ function AddProduct() {
   return (
     <>
       <BackButton />{" "}
-      <Form fields={fields} setData={setproduct} isButtonShow={false} />
+      <Form fields={fields} setData={setProduct} isButtonShow={false} />
       <div> الكمية</div>
       <Form
         fields={fields2}

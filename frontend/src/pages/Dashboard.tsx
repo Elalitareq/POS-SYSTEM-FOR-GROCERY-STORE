@@ -30,6 +30,10 @@ function Dashboard() {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            gap: "10px",
+            
+            fontSize: "20px",
+            fontWeight: "bolder",
           }}
         >
           <link.icon style={{ height: "200px", width: "200px" }} />
