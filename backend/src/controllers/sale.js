@@ -5,5 +5,5 @@ export async function addBill(req, res) {
     if (bill) {
         await createBill(bill);
     }
-    res.status(200).json({ message: "bill created succ", bill: bill });
+    res.status(200).json({ message: "bill created succ" });
 }
