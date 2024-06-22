@@ -8,7 +8,7 @@ import { Box } from "@mui/material";
 function Edits() {
     return (
         <Box  sx={{ fontSize: "10px", color: "gray" }}>
-            <Edit />
+            <Edit  />
         </Box>
     );
 }
