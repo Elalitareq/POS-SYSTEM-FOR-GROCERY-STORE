@@ -7,6 +7,7 @@ import actionService from "../services/action.js";
 async function addUser(req, res) {
   const { userName, password, role, password2 } = req.body;
 
+  console.log(req.body);
   if (!userName || !password || !role) {
     throw makeError("Please provide userName, password and role", 400);
   }

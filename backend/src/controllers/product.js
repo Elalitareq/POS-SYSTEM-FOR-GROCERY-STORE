@@ -22,7 +22,7 @@ export async function addProduct(req, res) {
 export async function editProduct(req, res) {
   const data = req.body;
   const { id } = req.params;
-  const oldProduct = await productService.getProductById(id);
+  const oldProduct = await productService.findProductById(id);
   const updatedProduct = await productService.modifyProduct(id, data);
 
   const actionDescription = getObjectChangesInArabicAndEnglish(
@@ -31,6 +31,7 @@ export async function editProduct(req, res) {
   );
 
   if (actionDescription.isChanged) {
+    console.log(actionDescription);
     await actionService.createNewAction(
       req.user.id,
       actionDescription.ar,

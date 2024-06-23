@@ -24,8 +24,6 @@ router.get(
 
 router.post(
   "/create-user",
-  verifyToken,
-  allowRoles(["ADMIN", "SUPERADMIN"]),
   // verifyToken,
   // allowRoles(['ADMIN', 'SUPERADMIN']),
   tryCatch(addUser)
