@@ -64,11 +64,6 @@ function Product() {
 
   const columns: GridColDef<ProductObject>[] = [
     {
-      field: "id",
-      headerName: "ID",
-      width: 80,
-    },
-    {
       field: "name",
       headerName: "اﻹسم",
       width: 150,
