@@ -7,6 +7,7 @@ interface DataProps {
   buttonText?: string;
   onClickAddButton?: any;
   disableColumnMenu?: boolean;
+  isRowHeightDisabled?: boolean;
   onRowEdit?: (rowId?: number, newRow?: any) => void;
 }
 
@@ -17,6 +18,7 @@ function DataTable({
   onClickAddButton,
   disableColumnMenu,
   onRowEdit,
+  isRowHeightDisabled,
 }: DataProps) {
   return (
     <Box
@@ -40,6 +42,19 @@ function DataTable({
       )}
       <Box sx={{ flexGrow: 1 }}>
         <DataGrid
+          {...(!isRowHeightDisabled
+            ? { rowHeight: 30, autoHeight: true }
+            : {
+                getRowHeight: (params) => {
+                  console.log(params);
+                  const { model } = params;
+                  if (model.isExpandable) {
+                    return "auto";
+                  } else {
+                    return 35;
+                  }
+                },
+              })}
           disableColumnMenu={disableColumnMenu}
           rows={rows}
           columns={columns}

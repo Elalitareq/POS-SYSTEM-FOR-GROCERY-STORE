@@ -1,14 +1,46 @@
-import Box from "@mui/material/Box";
-import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
-import Delete from "../../components/buttons/Delete";
-import Edit from "../../components/buttons/Edit";
+import { Box, Button } from "@mui/material";
+import { GridColDef } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DataTable from "../../components/dataTable/DataGrid";
 import { LoaderContext } from "../../layout";
 import { useContext, useState, useEffect } from "react";
 import useApiRequests from "../../hooks/useApiRequests";
+
+const ExpandableCell = ({ content }: { content: string }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const lineBreaks = (content || "").split("\n");
+  const shouldExpand = lineBreaks.length > 2;
+  const previewContent = shouldExpand
+    ? lineBreaks.slice(0, 2).join("\n") + "..."
+    : content;
+
+  return (
+    <Box sx={{ position: "relative" }}>
+      {shouldExpand && (
+        <Button
+          sx={{ position: "absolute", top: "2px", right: "2px" }}
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          {isExpanded ? "Collapse" : "Expand"}
+        </Button>
+      )}
+
+      {isExpanded || !shouldExpand
+        ? content.split("\n").map((line) => {
+            return <div>{line}</div>;
+          })
+        : previewContent.split("\n").map((line) => {
+            return (
+              <>
+                {line}
+                <br />
+              </>
+            );
+          })}
+    </Box>
+  );
+};
 
 interface ActionObject {
   id: number;
@@ -32,7 +64,13 @@ function Action() {
       isLoad?.setLoad(true);
       getAllAction()
         .then((res) => {
-          setDataAction(res);
+          setDataAction(
+            res.map((data: { description: { ar: string } }) => {
+              const lineBreaks = (data.description.ar || "").split("\n");
+              const shouldExpand = lineBreaks.length > 2;
+              return { ...data, isExpandable: shouldExpand };
+            })
+          );
           isLoad?.setLoad(false);
         })
         .catch((error) => {
@@ -56,7 +94,9 @@ function Action() {
       headerName: "شرح",
       width: 500,
       renderCell: ({ row }) => {
-        return <> {JSON.stringify(row.description?.ar)}</>;
+        return (
+          <ExpandableCell content={row?.description?.ar || "no description"} />
+        );
       },
     },
     {
@@ -95,6 +135,7 @@ function Action() {
         <DataTable
           columns={columns}
           rows={dataAction}
+          isRowHeightDisabled
           // buttonText="إضافة صنف"
           // onClickAddButton={() => navigate("add-categories")}
         />
