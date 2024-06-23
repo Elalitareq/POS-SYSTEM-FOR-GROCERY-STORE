@@ -3,12 +3,13 @@ import Form from "../../components/form/Form";
 import BackButton from "../../components/backButton/BackButton";
 import { addCategory } from "../../utils/apisRequest";
 import { enqueueSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 function AddCategory() {
   const [addData, setAddData] = useState({
     name: "",
     description: "",
   });
-
+  const navigate = useNavigate();
   const fields = [
     {
       label: "اﻹسم",
@@ -36,9 +37,10 @@ function AddCategory() {
         const dataAdded = await addCategory(addData);
         if (dataAdded) {
           enqueueSnackbar({
-            message: "تم ﻹنشاءبنجاح .",
+            message: "تم اﻹنشاء بنجاح .",
             variant: "success",
           });
+          navigate(-1);
         }
       }
     } catch (error: any) {
