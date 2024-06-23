@@ -46,7 +46,6 @@ function DataTable({
             ? { rowHeight: 30, autoHeight: true }
             : {
                 getRowHeight: (params) => {
-                  console.log(params);
                   const { model } = params;
                   if (model.isExpandable) {
                     return "auto";
