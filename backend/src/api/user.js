@@ -13,7 +13,7 @@ import { tryCatch } from "../utils/functions.js";
 
 const router = Express.Router();
 
-router.get("/user", tryCatch(getAllUsers));
+router.get("/users", tryCatch(getAllUsers));
 
 router.get("/user/:id", tryCatch(getUserById));
 

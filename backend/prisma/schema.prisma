@@ -99,8 +99,8 @@ model Action {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   userId       Int
-  user         User     @relation(fields: [userId], references: [id])
-  description  String
+  user         User?     @relation(fields: [userId], references: [id])
+  description  Json
   actionType   String // For example, "CREATE", "UPDATE", "DELETE"
   lastModified DateTime @default(now())
 }
