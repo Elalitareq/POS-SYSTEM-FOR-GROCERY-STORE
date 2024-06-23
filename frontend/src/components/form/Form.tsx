@@ -217,14 +217,15 @@ function Form({
               defaultValue={field.options[0] || field.value}
               name={field.name}
             >
-              {field.options?.map((option: any, index: number) => (
-                <FormControlLabel
-                  key={index}
-                  control={<Radio />}
-                  label={option}
-                  value={option}
-                />
-              ))}
+              {field.options?.length > 0 &&
+                field.options?.map((option: any, index: number) => (
+                  <FormControlLabel
+                    key={index}
+                    control={<Radio />}
+                    label={option}
+                    value={option}
+                  />
+                ))}
             </RadioGroup>
           </FormGroup>
         );
@@ -243,13 +244,14 @@ function Form({
               name={field.name}
               label={field.label}
             >
-              {field.options?.map(
-                (option: { title: string; value: any }, index: number) => (
-                  <MenuItem key={index} value={option.value}>
-                    {option.title}{" "}
-                  </MenuItem>
-                )
-              )}
+              {field.options?.length > 0 &&
+                field.options?.map(
+                  (option: { title: string; value: any }, index: number) => (
+                    <MenuItem key={index} value={option.value}>
+                      {option.title}{" "}
+                    </MenuItem>
+                  )
+                )}
             </Select>
           </FormControl>
         );

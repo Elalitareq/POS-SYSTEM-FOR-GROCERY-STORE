@@ -13,12 +13,19 @@ import { tryCatch } from "../utils/functions.js";
 
 const router = Express.Router();
 
-router.get("/users", tryCatch(getAllUsers));
+router.get("/users", verifyToken, tryCatch(getAllUsers));
 
-router.get("/user/:id", tryCatch(getUserById));
+router.get(
+  "/user/:id",
+  verifyToken,
+  allowRoles(["ADMIN", "SUPERADMIN"]),
+  tryCatch(getUserById)
+);
 
 router.post(
   "/create-user",
+  verifyToken,
+  allowRoles(["ADMIN", "SUPERADMIN"]),
   // verifyToken,
   // allowRoles(['ADMIN', 'SUPERADMIN']),
   tryCatch(addUser)
