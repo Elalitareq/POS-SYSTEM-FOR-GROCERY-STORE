@@ -11,6 +11,7 @@ export const getObjectChangesInArabicAndEnglish = (oldObject, newObject) => {
   }
 
   return {
+    isChanged: changes.length > 0,
     ar: `${changes.map((change) => `${change.key} : ${change.oldValue} تم تغييرها الى ${change.newValue}`).join("\n")}`,
     en: `${changes.map((change) => `${change.key} : ${change.oldValue} changed to ${change.newValue}`).join("\n")}`,
   };

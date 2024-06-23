@@ -1,5 +1,7 @@
+import actionService from "../services/action.js";
 import batchService from "../services/batch.js";
 import productService from "../services/product.js";
+import { getObjectChangesInArabicAndEnglish } from "../utils/userAtions.js";
 
 // POST /products - Add a new product
 export async function addProduct(req, res) {
@@ -20,10 +22,26 @@ export async function addProduct(req, res) {
 export async function editProduct(req, res) {
   const data = req.body;
   const { id } = req.params;
-  const modifyProduct = await productService.modifyProduct(id, data);
+  const oldProduct = await productService.getProductById(id);
+  const updatedProduct = await productService.modifyProduct(id, data);
+
+  const actionDescription = getObjectChangesInArabicAndEnglish(
+    oldProduct,
+    updatedProduct
+  );
+
+  if (actionDescription.isChanged) {
+    await actionService.createNewAction(
+      req.user.id,
+      actionDescription.ar,
+      actionDescription.en,
+      "UPDATE"
+    );
+  }
+
   res.status(201).json({
     message: "Product modify successfully",
-    product: modifyProduct,
+    product: updatedProduct,
   });
 }
 
