@@ -1,19 +1,19 @@
 import { useState } from "react";
 import Form from "../../components/form/Form";
-import { addUser } from "../../utils/apisRequest";
 import BackButton from "../../components/backButton/BackButton";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
+import useApiRequests from "../../hooks/useApiRequests";
 
 function AddUser() {
-  const Auth = useAuthHeader();
   const [addData, setAddData] = useState({
     userName: "",
     password: "",
     password2: "",
     role: "EMPLOYEE",
   });
+  const { addUser } = useApiRequests();
 
   const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ function AddUser() {
           variant: "error",
         });
       } else {
-        const dataAdded = await addUser(addData, Auth);
+        const dataAdded = await addUser(addData);
         if (dataAdded.status === 403) {
           enqueueSnackbar({
             message: "ليس مسموح لك باﻹضافة .",

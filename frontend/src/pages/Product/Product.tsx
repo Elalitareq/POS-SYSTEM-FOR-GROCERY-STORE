@@ -8,11 +8,11 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DataTable from "../../components/dataTable/DataGrid";
 import { LoaderContext } from "../../layout";
 import { useContext, useState, useEffect } from "react";
-import { addBatch, getAllProduct } from "../../utils/apisRequest";
 import { Button } from "@mui/material";
 import Modal from "../../components/modal/Modal";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { enqueueSnackbar } from "notistack";
+import useApiRequests from "../../hooks/useApiRequests";
 
 interface ProductObject {
   id: number;
@@ -25,6 +25,7 @@ interface ProductObject {
 }
 
 function Product() {
+  const { getAllProduct, addBatch } = useApiRequests();
   const navigate = useNavigate();
 
   const { id }: number | any = useAuthUser();
@@ -38,8 +39,6 @@ function Product() {
   const [batch, setBatch] = useState({
     userId: id,
   });
-
-  console.log(batch);
 
   const isLoad = useContext(LoaderContext);
 
@@ -58,7 +57,6 @@ function Product() {
           }
         })
         .catch((error) => {
-          console.log("Error fetching data:", error);
           isLoad?.setLoad(false);
         });
     };

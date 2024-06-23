@@ -3,11 +3,12 @@ import Form from "../../components/form/Form";
 import { useParams } from "react-router-dom";
 import { LoaderContext } from "../../layout";
 import { useContext } from "react";
-import { getCategoryById, modifyCategory } from "../../utils/apisRequest";
 import { enqueueSnackbar } from "notistack";
 import BackButton from "../../components/backButton/BackButton";
+import useApiRequests from "../../hooks/useApiRequests";
 
 function EditCategory() {
+  const { getCategoryById, modifyCategory } = useApiRequests();
   const { id } = useParams();
 
   const isLoad = useContext(LoaderContext);
@@ -29,7 +30,6 @@ function EditCategory() {
         }));
         isLoad?.setLoad(false);
       } catch (error) {
-        console.log("Error fetching data:", error);
         isLoad?.setLoad(false);
       }
     };

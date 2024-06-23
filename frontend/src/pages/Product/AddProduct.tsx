@@ -1,13 +1,16 @@
 import { useState } from "react";
 import Form from "../../components/form/Form";
 import BackButton from "../../components/backButton/BackButton";
-import { addProduct, getAllCategories } from "../../utils/apisRequest";
 import { LoaderContext } from "../../layout";
 import { useContext, useEffect } from "react";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { enqueueSnackbar } from "notistack";
+import useApiRequests from "../../hooks/useApiRequests";
+import { useNavigate } from "react-router-dom";
 
 function AddProduct() {
+  const navigate = useNavigate();
+  const { addProduct, getAllCategories } = useApiRequests();
   const { id }: number | any = useAuthUser();
 
   const [product, setProduct] = useState({
@@ -24,7 +27,6 @@ function AddProduct() {
   const isLoad = useContext(LoaderContext);
 
   const [categories, setCategories] = useState(null);
-  console.log(categories);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +47,6 @@ function AddProduct() {
 
         isLoad?.setLoad(false);
       } catch (error) {
-        console.log("Error fetching data:", error);
         isLoad?.setLoad(false);
       }
     };
@@ -150,7 +151,6 @@ function AddProduct() {
           variant: "error",
         });
       } else {
-        console.log(new Date(batch.receivedDate));
         const dataAdded = await addProduct({
           productData: { ...product, categoryID: product.categoryId },
           batches: [
@@ -164,9 +164,10 @@ function AddProduct() {
 
         if (dataAdded) {
           enqueueSnackbar({
-            message: "تم ﻹنشاءبنجاح .",
+            message: "تم اﻹنشاء بنجاح .",
             variant: "success",
           });
+          navigate(-1);
         }
       }
     } catch (error: any) {

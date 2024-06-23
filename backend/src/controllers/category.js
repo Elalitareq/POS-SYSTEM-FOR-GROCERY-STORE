@@ -1,16 +1,16 @@
-import categoryServices from '../services/category.js';
-import { makeError } from '../utils/functions.js';
+import categoryServices from "../services/category.js";
+import { makeError } from "../utils/functions.js";
 
 export async function addCategory(req, res) {
   const data = req.body;
   const newCategory = await categoryServices.createNewCategory(data);
   if (newCategory) {
     res.status(201).json({
-      message: 'category created succesfuly',
+      message: "category created succesfuly",
       newCategory,
     });
   } else {
-    makeError('failed to create', 400);
+    makeError("failed to create", 400);
   }
 }
 
@@ -20,11 +20,11 @@ export async function editCategory(req, res) {
   const modifyCategory = await categoryServices.modifyCategory(id, data);
   if (modifyCategory) {
     res.status(201).json({
-      message: 'category modified succesfuly',
+      message: "category modified succesfuly",
       modifyCategory,
     });
   } else {
-    makeError('failed to modify', 400);
+    makeError("failed to modify", 400);
   }
 }
 
@@ -33,7 +33,7 @@ export async function getAllCategory(_, res) {
   if (allCategories) {
     res.status(201).json(allCategories);
   } else {
-    makeError('failed to get categories', 400);
+    makeError("failed to get categories", 400);
   }
 }
 
@@ -43,7 +43,7 @@ export async function getCategoryById(req, res) {
   if (categoryById) {
     res.status(201).json(categoryById);
   } else {
-    makeError('failed to get category', 400);
+    makeError("failed to get category", 400);
   }
 }
 
@@ -53,6 +53,6 @@ export async function removeCategory(req, res) {
   if (removeCategory) {
     res.status(201).json(removeCategory);
   } else {
-    makeError('failed to remove category', 400);
+    makeError("failed to remove category", 400);
   }
 }

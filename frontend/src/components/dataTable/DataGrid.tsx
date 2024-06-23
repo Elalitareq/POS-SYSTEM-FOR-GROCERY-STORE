@@ -18,7 +18,6 @@ function DataTable({
   disableColumnMenu,
   onRowEdit,
 }: DataProps) {
-  console.log(rows);
   return (
     <Box
       sx={{

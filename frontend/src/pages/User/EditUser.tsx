@@ -3,12 +3,13 @@ import Form from "../../components/form/Form";
 import { useNavigate, useParams } from "react-router-dom";
 import { LoaderContext } from "../../layout";
 import { useContext } from "react";
-import { getUserById, modifyUser } from "../../utils/apisRequest";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import BackButton from "../../components/backButton/BackButton";
 import { enqueueSnackbar } from "notistack";
+import useApiRequests from "../../hooks/useApiRequests";
 
 function EditUser() {
+  const { getUserById, modifyUser } = useApiRequests();
   const { id } = useParams();
 
   const isLoad = useContext(LoaderContext);
@@ -34,7 +35,6 @@ function EditUser() {
         }));
         isLoad?.setLoad(false);
       } catch (error) {
-        console.log("Error fetching data:", error);
         isLoad?.setLoad(false);
       }
     };
@@ -44,7 +44,7 @@ function EditUser() {
   async function handleSubmit(e: any) {
     e.preventDefault();
     try {
-      const usersModifyed = await modifyUser(id, editData, Auth);
+      const usersModifyed = await modifyUser(id, editData);
       if (usersModifyed.status === 403) {
         enqueueSnackbar({
           message: "ليس مسموح لك بالتعديل .",
@@ -58,7 +58,6 @@ function EditUser() {
         navigate(-1);
       }
     } catch (error: any) {
-      console.log(error);
       enqueueSnackbar({
         message: error.response.data.message,
         variant: "error",

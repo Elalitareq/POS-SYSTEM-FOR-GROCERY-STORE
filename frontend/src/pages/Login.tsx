@@ -53,7 +53,6 @@ export default function SignUp() {
         navigate("/");
       }
     } catch (error: any) {
-      console.log(error);
       setErrorMessage(error.response.data.message);
     }
   };

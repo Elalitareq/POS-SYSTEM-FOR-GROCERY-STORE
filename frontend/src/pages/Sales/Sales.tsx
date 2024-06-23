@@ -8,7 +8,6 @@ import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import FolderIcon from "@mui/icons-material/Folder";
-import { addBill, getAllProduct } from "../../utils/apisRequest";
 import { LoaderContext } from "../../layout";
 import DataTable from "../../components/dataTable/DataGrid";
 import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
@@ -20,6 +19,7 @@ import {
   PlusOne,
 } from "@mui/icons-material";
 import Delete from "../../components/buttons/Delete";
+import useApiRequests from "../../hooks/useApiRequests";
 
 interface ProductObject {
   id: number;
@@ -50,6 +50,7 @@ interface Product {
 }
 
 export default function InteractiveList() {
+  const { getAllProduct, addBill } = useApiRequests();
   const [dense, setDense] = useState(false);
   const [dataProduct, setDataProduct] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
@@ -70,7 +71,6 @@ export default function InteractiveList() {
           }
         })
         .catch((error) => {
-          console.log("Error fetching data:", error);
           isLoad?.setLoad(false);
         });
     };
@@ -170,13 +170,11 @@ export default function InteractiveList() {
   };
 
   const handleSelectedProduct = (product: Product) => {
-    console.log(product);
     const productId = product.id;
 
     const productIndex = selectedProducts.findIndex(
       (product) => product.id === productId
     );
-    console.log(productIndex);
 
     if (productIndex !== -1) {
       setSelectedProducts((oldProducts) => {

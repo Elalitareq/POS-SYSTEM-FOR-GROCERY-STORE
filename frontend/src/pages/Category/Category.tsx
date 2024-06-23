@@ -3,12 +3,10 @@ import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Delete from "../../components/buttons/Delete";
 import Edit from "../../components/buttons/Edit";
 import { useNavigate } from "react-router-dom";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DataTable from "../../components/dataTable/DataGrid";
 import { LoaderContext } from "../../layout";
 import { useContext, useState, useEffect } from "react";
-import { getAllCategories } from "../../utils/apisRequest";
+import useApiRequests from "../../hooks/useApiRequests";
 
 interface CategoryObject {
   id: number;
@@ -20,6 +18,7 @@ interface CategoryObject {
 
 function Category() {
   const navigate = useNavigate();
+  const { getAllCategories } = useApiRequests();
 
   const [dataCategory, setDataCategory] = useState(null);
 
@@ -34,7 +33,6 @@ function Category() {
           isLoad?.setLoad(false);
         })
         .catch((error) => {
-          console.log("Error fetching data:", error);
           isLoad?.setLoad(false);
         });
     };

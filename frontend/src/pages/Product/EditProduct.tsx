@@ -6,14 +6,12 @@ import { useContext } from "react";
 // import { getProductById, modifyProduct } from "../../utils/apisRequest";
 import { enqueueSnackbar } from "notistack";
 import BackButton from "../../components/backButton/BackButton";
-import {
-  getAllCategories,
-  getProductById,
-  modifyProduct,
-} from "../../utils/apisRequest";
+import useApiRequests from "../../hooks/useApiRequests";
 
 function EditProduct() {
   let ID = useParams().id;
+
+  const { getProductById, modifyProduct, getAllCategories } = useApiRequests();
 
   const isLoad = useContext(LoaderContext);
 
@@ -53,7 +51,6 @@ function EditProduct() {
         setEditData(rest);
         isLoad?.setLoad(false);
       } catch (error) {
-        console.log("Error fetching data:", error);
         isLoad?.setLoad(false);
       }
     };
@@ -70,7 +67,6 @@ function EditProduct() {
         });
       } else {
         const dataAdded = await modifyProduct(ID, editData);
-        console.log(dataAdded);
         if (dataAdded) {
           enqueueSnackbar({
             message: "تم التعديل بنجاح .",

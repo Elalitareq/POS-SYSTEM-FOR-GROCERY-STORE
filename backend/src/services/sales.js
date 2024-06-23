@@ -2,8 +2,6 @@ import productDAL from "../dal/product.js";
 import transactionDAL from "../dal/transaction.js";
 
 async function createBill(bill) {
-  console.log(bill);
-
   bill.forEach(async (product) => {
     await productDAL.incrementOrDecrementProductCount(
       product.id,

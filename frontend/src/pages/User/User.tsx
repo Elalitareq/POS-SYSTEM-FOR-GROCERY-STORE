@@ -5,11 +5,11 @@ import Edit from "../../components/buttons/Edit";
 import { useNavigate } from "react-router-dom";
 import DataTable from "../../components/dataTable/DataGrid";
 import { useState, useEffect } from "react";
-import { getAllUsers } from "../../utils/apisRequest";
 import { LoaderContext } from "../../layout";
 import { useContext } from "react";
 import useUserInfo from "../../hooks/useUserInfo";
 import { ROLES } from "../../utils/staticData";
+import useApiRequests from "../../hooks/useApiRequests";
 
 interface UserObject {
   userName: string;
@@ -22,6 +22,7 @@ interface UserObject {
 
 function User() {
   const navigate = useNavigate();
+  const { getAllUsers } = useApiRequests();
   const [dataUser, setDataUser] = useState(null);
 
   const isLoad = useContext(LoaderContext);
@@ -38,7 +39,6 @@ function User() {
           isLoad?.setLoad(false);
         }, 500);
       } catch (error) {
-        console.log("Error fetching data:", error);
         isLoad?.setLoad(false);
       }
     };
