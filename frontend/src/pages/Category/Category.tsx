@@ -13,7 +13,6 @@ interface CategoryObject {
   name: string;
   description?: string;
   lastModified: string;
-  synced: boolean;
 }
 
 function Category() {

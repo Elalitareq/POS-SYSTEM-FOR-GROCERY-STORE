@@ -47,7 +47,7 @@ function EditProduct() {
           delete category[i]["id"];
         }
         setCategories(category);
-        const { synced, lastModified, Category, id, ...rest } = product;
+        const { lastModified, Category, id, ...rest } = product;
         setEditData(rest);
         isLoad?.setLoad(false);
       } catch (error) {

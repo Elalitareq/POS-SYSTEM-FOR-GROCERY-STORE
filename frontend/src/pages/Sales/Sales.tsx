@@ -27,7 +27,6 @@ interface ProductObject {
   sku: string;
   description?: string;
   lastModified: string;
-  synced: boolean;
   quantity: number;
   salePrice: number;
   action: any;

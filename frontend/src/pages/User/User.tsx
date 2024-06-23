@@ -17,7 +17,6 @@ interface UserObject {
   lastModified: string;
   password: string;
   role: string;
-  synced: boolean;
 }
 
 function User() {

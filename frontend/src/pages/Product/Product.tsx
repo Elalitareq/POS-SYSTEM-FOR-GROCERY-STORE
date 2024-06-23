@@ -19,7 +19,6 @@ interface ProductObject {
   name: string;
   description?: string;
   lastModified: string;
-  synced: boolean;
   Category: any;
   totalProductCount?: number;
 }
@@ -125,22 +124,7 @@ function Product() {
         return <> {row.lastModified.replace("T", " ").slice(0, 16)} </>;
       },
     },
-    {
-      field: "synced",
-      headerName: "Synced",
-      width: 110,
-      renderCell: ({ row }) => {
-        return (
-          <>
-            {row.synced ? (
-              <CheckCircleIcon sx={{ color: "#52b963" }} />
-            ) : (
-              <HighlightOffIcon sx={{ color: "#cc0000" }} />
-            )}
-          </>
-        );
-      },
-    },
+
     {
       field: "Actions",
       headerName: "Actions",
