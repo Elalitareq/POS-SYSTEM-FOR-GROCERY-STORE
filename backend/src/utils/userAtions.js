@@ -1,4 +1,4 @@
-const getObjectChangesInArabicAndEnglish = (oldObject, newObject) => {
+export const getObjectChangesInArabicAndEnglish = (oldObject, newObject) => {
   const changes = [];
   for (const key in newObject) {
     if (oldObject[key] !== newObject[key]) {
