@@ -2,8 +2,9 @@ import jwt from "jsonwebtoken";
 import userDAL from "../dal/user.js";
 
 export const verifyToken = async (req, res, next) => {
+  console.log(req.headers);
   if (!req.headers.authorization) {
-    return res.send({ message: "Token is required" });
+    return res.status(401).send({ message: "Token is required" });
   }
 
   const token = req.headers.authorization.split(" ")[1];

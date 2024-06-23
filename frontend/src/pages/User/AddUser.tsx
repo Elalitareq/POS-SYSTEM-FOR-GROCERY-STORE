@@ -45,8 +45,11 @@ function AddUser() {
           navigate(-1);
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      enqueueSnackbar({
+        message: error?.response?.data?.message || error?.message,
+        variant: "error",
+      });
     }
   }
 

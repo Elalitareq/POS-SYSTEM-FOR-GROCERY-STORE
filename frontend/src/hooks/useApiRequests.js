@@ -116,14 +116,15 @@ const useApiRequests = () => {
     );
     return addProduct.data;
   }
-  async function getAllProduct(data) {
-    const getProduct = await axios.get(url + "/api/products/products", data, {
+  async function getAllProduct() {
+    const response = await axios.get(url + "/api/products/products", {
       headers: {
         "Content-Type": "application/json",
         authorization: authHeader,
       },
     });
-    return getProduct.data;
+    console.log(response.data);
+    return response.data;
   }
 
   async function getProductById(id) {
@@ -161,8 +162,8 @@ const useApiRequests = () => {
     });
     return addBatch.data;
   }
-  async function getAllBatch(data) {
-    const getBatch = await axios.get(url + "/api/batches/batches", data, {
+  async function getAllBatch() {
+    const getBatch = await axios.get(url + "/api/batches/batches", {
       headers: {
         "Content-Type": "application/json",
         authorization: authHeader,
@@ -208,8 +209,8 @@ const useApiRequests = () => {
   }
 
   // actions
-  async function getAllAction(data) {
-    const addBill = await axios.get(url + "/api/actions/actions", data, {
+  async function getAllAction() {
+    const addBill = await axios.get(url + "/api/actions/actions", {
       headers: {
         "Content-Type": "application/json",
         authorization: authHeader,
