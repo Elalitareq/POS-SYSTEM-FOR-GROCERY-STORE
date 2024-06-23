@@ -21,6 +21,7 @@ import EditUser from "./pages/User/EditUser";
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
 import { SnackbarProvider } from "notistack";
 import Sales from "./pages/Sales/Sales";
+import "./App.css";
 
 function App() {
   return (

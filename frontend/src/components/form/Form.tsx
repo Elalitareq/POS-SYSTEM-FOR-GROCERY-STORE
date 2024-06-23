@@ -74,7 +74,6 @@ function Form({
       let dateFormat = value.split(" ");
       dateFormat.push(":00.213Z");
       let iso8601Date = dateFormat.join("");
-      console.log(iso8601Date);
       setData((previous: any) => ({
         ...previous,
         [name]: iso8601Date,
@@ -100,6 +99,15 @@ function Form({
             value={field.value}
             placeholder={field.placeHolder}
             key={index}
+            inputProps={
+              field.inputType === "number" &&
+              field.name !== "quantity" &&
+              field.name !== "inventoryCount"
+                ? {
+                    step: "0.10",
+                  }
+                : {}
+            }
             id="outlined-basic"
             variant="outlined"
             sx={{ width: "100%" }}
@@ -148,20 +156,22 @@ function Form({
       }
       if (field.inputType === "date") {
         return (
-          <div>
-            <FormLabel>{field.label}</FormLabel>
-            <TextField
-              size="small"
-              onChange={(e) => handleChangeData(e)}
-              type={field.inputType}
-              value={field.value}
-              name={field.name}
-              placeholder={field.placeHolder}
-              key={index}
-              id="outlined-basic"
-              variant="outlined"
-            />
-          </div>
+          <TextField
+            label={field.label}
+            style={{
+              direction: "rtl",
+            }}
+            size="small"
+            onChange={(e) => handleChangeData(e)}
+            type={field.inputType}
+            value={field.value}
+            name={field.name}
+            placeholder={field.placeHolder}
+            key={index}
+            id="outlined-basic"
+            variant="outlined"
+            hiddenLabel
+          />
         );
       }
       if (field.inputType === "file") {

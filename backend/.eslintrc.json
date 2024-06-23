@@ -9,7 +9,8 @@
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "no-unused-vars": "warn",
     "no-console": "off",
-    "node/no-unsupported-features/es-syntax": "off"
+    "node/no-unsupported-features/es-syntax": "off",
+    "no-return-await": "error"
   },
   "parserOptions": {
     "ecmaVersion": 12

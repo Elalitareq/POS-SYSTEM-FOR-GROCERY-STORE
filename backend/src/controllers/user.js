@@ -1,16 +1,16 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import userService from '../services/user.js';
-import { makeError } from '../utils/functions.js';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import userService from "../services/user.js";
+import { makeError } from "../utils/functions.js";
 
 async function addUser(req, res) {
   const { userName, password, role, password2 } = req.body;
 
   if (!userName || !password || !role) {
-    throw makeError('Please provide userName, password and role', 400);
+    throw makeError("Please provide userName, password and role", 400);
   }
   if (password !== password2) {
-    throw makeError('Passwords do not match', 400);
+    throw makeError("Passwords do not match", 400);
   }
 
   const userWithHashPassword = {
@@ -21,7 +21,7 @@ async function addUser(req, res) {
 
   const newUser = await userService.createNewUser(userWithHashPassword);
   res.status(201).json({
-    message: 'user added successfully',
+    message: "user added successfully",
     newUser,
   });
 }
@@ -32,7 +32,7 @@ async function updateUser(req, res) {
 
   if (!id || !userName || !role) {
     return res.status(400).json({
-      message: 'Please provide all required fields',
+      message: "Please provide all required fields",
     });
   }
 
@@ -43,7 +43,7 @@ async function updateUser(req, res) {
   if (password || password2) {
     if (password !== password2) {
       return res.status(400).json({
-        message: 'The passwords do not match',
+        message: "The passwords do not match",
       });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -54,12 +54,12 @@ async function updateUser(req, res) {
 
   if (!result) {
     return res.status(404).json({
-      message: 'User not found',
+      message: "User not found",
     });
   }
 
   return res.status(200).json({
-    message: 'User updated successfully',
+    message: "User updated successfully",
     updateUser: result,
   });
 }
@@ -70,11 +70,11 @@ async function removeUser(req, res) {
   if (id != null) {
     await userService.removeUser(id);
     res.status(201).json({
-      message: 'user removed successfully',
+      message: "user removed successfully",
     });
   } else {
     res.status(500).json({
-      message: 'please check id of which user you want to remove',
+      message: "please check id of which user you want to remove",
     });
   }
 }
@@ -83,24 +83,28 @@ async function loginUser(req, res) {
   const { userName, password } = req.body;
 
   if (!userName && !password) {
-    throw makeError('Please provide userName and password', 400);
+    throw makeError("Please provide userName and password", 400);
   }
 
   const user = await userService.findUserByUserName(userName);
 
+  if (!user) {
+    throw makeError("Username or password is wrong", 404);
+  }
+
   const { id } = user;
   if (bcrypt.compareSync(password, user.password)) {
     const token = jwt.sign({ userName, id }, process.env.JWT_SECRET, {
-      expiresIn: '1d',
+      expiresIn: "1d",
     });
     return res.status(201).json({
       token,
       userData: user,
-      message: 'user logged in successfully',
+      message: "user logged in successfully",
     });
   }
   return res.status(500).json({
-    message: 'userName or password WRONG !!',
+    message: "userName or password WRONG !!",
   });
 }
 

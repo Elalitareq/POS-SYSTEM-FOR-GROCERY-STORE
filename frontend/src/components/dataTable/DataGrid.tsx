@@ -7,6 +7,7 @@ interface DataProps {
   buttonText?: string;
   onClickAddButton?: any;
   disableColumnMenu?: boolean;
+  onRowEdit?: (rowId?: number, newRow?: any) => void;
 }
 
 function DataTable({
@@ -15,7 +16,9 @@ function DataTable({
   buttonText,
   onClickAddButton,
   disableColumnMenu,
+  onRowEdit,
 }: DataProps) {
+  console.log(rows);
   return (
     <Box
       sx={{
@@ -51,6 +54,12 @@ function DataTable({
           pageSizeOptions={[5]}
           // checkboxSelection
           disableRowSelectionOnClick
+          {...(onRowEdit
+            ? {
+                onRowEditStop: (newRow, oldRow: any) =>
+                  onRowEdit(oldRow?.id, newRow),
+              }
+            : {})}
         />
       </Box>
     </Box>

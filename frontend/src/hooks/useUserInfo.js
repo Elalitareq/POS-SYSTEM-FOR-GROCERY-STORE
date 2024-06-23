@@ -5,7 +5,6 @@ import { ROLES } from "../utils/staticData";
 
 export default function useUserInfo() {
   const authState = useAuthUser();
-  console.log(authState);
   return {
     isSuperAdmin: authState.role === ROLES.SUPER_ADMIN,
     isAdmin: authState.role === ROLES.ADMIN,

@@ -21,6 +21,7 @@ interface ProductObject {
   lastModified: string;
   synced: boolean;
   Category: any;
+  totalProductCount?: number;
 }
 
 function Product() {
@@ -65,6 +66,11 @@ function Product() {
   }, []);
 
   const columns: GridColDef<ProductObject>[] = [
+    {
+      field: "id",
+      headerName: "ID",
+      width: 80,
+    },
     {
       field: "name",
       headerName: "اﻹسم",

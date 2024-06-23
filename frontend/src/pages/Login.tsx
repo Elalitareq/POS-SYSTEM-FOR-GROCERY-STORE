@@ -20,6 +20,7 @@ const defaultTheme = createTheme();
 export default function SignUp() {
   const signIn = useSignIn();
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = React.useState("");
   const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
 
   const url = process.env.REACT_APP_API_URL;
@@ -32,26 +33,28 @@ export default function SignUp() {
       password: data.get("password"),
     };
 
-    console.log(url);
-    const response = await axios.post(url + "/api/users/login", loginAth);
+    try {
+      const response = await axios.post(url + "/api/users/login", loginAth);
 
-    const { token, userData } = response.data;
-    if (
-      signIn({
-        auth: {
-          token: token,
-          type: "Bearer",
-        },
-        userState: {
-          userName: userData.userName,
-          id: userData.id,
-          role: userData.role,
-        },
-      })
-    ) {
-      navigate("/");
-    } else {
-      console.log(" error while sign in ");
+      const { token, userData } = response.data;
+      if (
+        signIn({
+          auth: {
+            token: token,
+            type: "Bearer",
+          },
+          userState: {
+            userName: userData.userName,
+            id: userData.id,
+            role: userData.role,
+          },
+        })
+      ) {
+        navigate("/");
+      }
+    } catch (error: any) {
+      console.log(error);
+      setErrorMessage(error.response.data.message);
     }
   };
 
@@ -125,11 +128,17 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
+            <Typography
+              variant="body2"
+              sx={{ color: "red", textAlign: "center", mt: 2 }}
+            >
+              {errorMessage && "الرجاء التحقق من اسم المستخدم وكلمة المرور"}
+            </Typography>
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 6, mb: 2 }}
+              sx={{ mt: 2, mb: 2 }}
             >
               تسجيل الدخول
             </Button>

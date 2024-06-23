@@ -16,11 +16,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Link, Outlet } from "react-router-dom";
-
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import useSignOut from "react-auth-kit/hooks/useSignOut";
 import Loader from "../components/loader";
 import { Home } from "@mui/icons-material";
 import useLinks from "../hooks/useLinks";
+import { Button } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -86,15 +87,29 @@ export default function PersistentDrawerLeft() {
   const { links } = useLinks();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [isToLogout, setIsToLogout] = React.useState(false);
+
+  const signOut = useSignOut();
 
   const [isLoad, setLoad] = React.useState(false);
-
+  const navigate = useNavigate();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  React.useEffect(() => {
+    if (isToLogout) {
+      signOut();
+      navigate("/login");
+    }
+  }, [isToLogout]);
+
+  const logout = () => {
+    setIsToLogout(true);
   };
 
   return (
@@ -117,8 +132,17 @@ export default function PersistentDrawerLeft() {
           </IconButton>
           <Typography variant="h6" noWrap component="div">
             GrowTech POS
-          </Typography>
-          <Link to="/" style={{ marginRight: "auto", paddingTop: "5px" }}>
+          </Typography>{" "}
+          <Button
+            type="button"
+            onClick={logout}
+            color="error"
+            variant="contained"
+            sx={{ marginLeft: "auto", marginRight: "10px" }}
+          >
+            Logout
+          </Button>
+          <Link to="/" style={{ paddingTop: "5px" }}>
             <Home
               style={{
                 color: "white",

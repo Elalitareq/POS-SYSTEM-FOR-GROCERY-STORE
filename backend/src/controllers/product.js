@@ -3,27 +3,18 @@ import productService from "../services/product.js";
 
 // POST /products - Add a new product
 export async function addProduct(req, res) {
-  try {
-    const { productData, batches } = req.body;
+  const { productData, batches } = req.body;
 
-    const newProduct = await productService.createNewProduct(productData);
+  const newProduct = await productService.createNewProduct(productData);
 
-    const createdBatches = await batchService.createMultipleBatches(
-      newProduct.id,
-      batches
-    );
-
-    res.status(201).json({
-      message: "Product added successfully",
-      product: newProduct,
-      batches: createdBatches,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Failed to add product",
-      error: error.message,
-    });
+  if (batches) {
+    await batchService.createMultipleBatches(newProduct.id, batches);
   }
+
+  res.status(201).json({
+    message: "Product added successfully",
+    product: newProduct,
+  });
 }
 
 export async function editProduct(req, res) {
@@ -37,8 +28,9 @@ export async function editProduct(req, res) {
 }
 
 export async function getAllProducts(_, res) {
-  const listProducts = await productService.listAllProducts();
-  res.status(201).json(listProducts);
+  const productList = await productService.listAllProducts();
+
+  res.status(201).json(productList);
 }
 export async function getProductById(req, res) {
   const { id } = req.params;

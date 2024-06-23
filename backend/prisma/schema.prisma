@@ -17,7 +17,6 @@ model User {
   products     Product[]
   batches      Batch[]
   lastModified DateTime  @default(now())
-  synced       Boolean   @default(false)
 }
 
 enum Role {
@@ -31,15 +30,15 @@ model Product {
   name              String
   description       String?
   sku               String              @unique
-  categoryID        Int
-  inventoryCount    Int
+  categoryID        Int?
+  inventoryCount    Int                 @default(0)
+  soldCount         Int                 @default(0)
   regularPrice      Float
-  salePrice         Float
-  wholesalePrice    Float
+  salePrice         Float?
+  wholesalePrice    Float?
   costPrice         Float
   batches           Batch[]
   lastModified      DateTime            @default(now())
-  synced            Boolean             @default(false)
   addedBy           User?               @relation(fields: [userId], references: [id])
   userId            Int?
   Category          Category?           @relation(fields: [categoryId], references: [id])
@@ -58,7 +57,6 @@ model Batch {
   addedBy      User?    @relation(fields: [userId], references: [id])
   userId       Int?
   lastModified DateTime @default(now())
-  synced       Boolean  @default(false)
 }
 
 model Category {
@@ -67,7 +65,6 @@ model Category {
   description  String?
   products     Product[]
   lastModified DateTime  @default(now())
-  synced       Boolean   @default(false)
 }
 
 enum SaleType {
@@ -84,7 +81,6 @@ model Transaction {
   saleType     SaleType
   details      TransactionDetail[]
   lastModified DateTime            @default(now())
-  synced       Boolean             @default(false)
 }
 
 model TransactionDetail {
@@ -96,7 +92,6 @@ model TransactionDetail {
   quantity          Int
   priceAtTimeOfSale Float
   lastModified      DateTime    @default(now())
-  synced            Boolean     @default(false)
 }
 
 model Action {
@@ -108,5 +103,4 @@ model Action {
   description  String
   actionType   String // For example, "CREATE", "UPDATE", "DELETE"
   lastModified DateTime @default(now())
-  synced       Boolean  @default(false)
 }

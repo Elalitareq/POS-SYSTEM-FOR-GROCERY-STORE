@@ -1,8 +1,9 @@
-import prisma from '../utils/prisma.js';
+import prisma from "../utils/prisma.js";
 
 async function getAllProducts() {
-  return await prisma.product.findMany({
+  return prisma.product.findMany({
     include: {
+      batches: true,
       Category: true,
     },
   });
@@ -10,31 +11,44 @@ async function getAllProducts() {
 
 async function getProductById(id) {
   const productId = parseInt(id);
-  return await prisma.product.findUnique({
+  return prisma.product.findUnique({
     where: { id: productId },
     include: {
+      batches: true,
       Category: true,
     },
   });
 }
 
 async function createProduct(data) {
-  return await prisma.product.create({
+  return prisma.product.create({
     data,
   });
 }
 
 async function updateProduct(id, data) {
   const productId = parseInt(id);
-  return await prisma.product.update({
+  return prisma.product.update({
     where: { id: productId },
     data,
   });
 }
 
+async function incrementOrDecrementProductCount(productId, change) {
+  const product = await prisma.product.findUnique({
+    where: { id: productId },
+  });
+  await prisma.product.update({
+    where: { id: productId },
+    data: {
+      inventoryCount: product.inventoryCount + change,
+    },
+  });
+}
+
 async function deleteProduct(id) {
   const productId = parseInt(id);
-  return await prisma.product.delete({
+  return prisma.product.delete({
     where: { id: productId },
   });
 }
@@ -45,6 +59,7 @@ const productDAL = {
   createProduct,
   updateProduct,
   deleteProduct,
+  incrementOrDecrementProductCount,
 };
 
 export default productDAL;

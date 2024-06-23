@@ -17,6 +17,8 @@ function AddProduct() {
 
   const [batch, setBatch] = useState({
     userId: id,
+    expiryDate: new Date(),
+    receivedDate: new Date(),
   });
 
   const isLoad = useContext(LoaderContext);
@@ -123,13 +125,13 @@ function AddProduct() {
     {
       label: "تاريخ اﻹدخال",
       name: "receivedDate",
-      inputType: "datetime-local",
+      inputType: "date",
       require: true,
     },
     {
       label: "تاريخ اﻹنتهاء",
       name: "expiryDate",
-      inputType: "datetime-local",
+      inputType: "date",
       require: true,
     },
   ];
@@ -148,9 +150,16 @@ function AddProduct() {
           variant: "error",
         });
       } else {
+        console.log(new Date(batch.receivedDate));
         const dataAdded = await addProduct({
           productData: { ...product, categoryID: product.categoryId },
-          batches: [batch],
+          batches: [
+            {
+              ...batch,
+              receivedDate: new Date(batch.receivedDate),
+              expiryDate: new Date(batch.expiryDate),
+            },
+          ],
         });
 
         if (dataAdded) {

@@ -1,5 +1,5 @@
 // Example Express route using the product DAL
-import Express from 'express';
+import Express from "express";
 import {
   removeUser,
   addUser,
@@ -7,37 +7,37 @@ import {
   loginUser,
   getAllUsers,
   getUserById,
-} from '../controllers/user.js';
-import { allowRoles, verifyToken } from '../middleware/userPermission.js';
-import { tryCatch } from '../utils/functions.js';
+} from "../controllers/user.js";
+import { allowRoles, verifyToken } from "../middleware/userPermission.js";
+import { tryCatch } from "../utils/functions.js";
 
 const router = Express.Router();
 
-router.get('/user', tryCatch(getAllUsers));
+router.get("/user", tryCatch(getAllUsers));
 
-router.get('/user/:id', tryCatch(getUserById));
+router.get("/user/:id", tryCatch(getUserById));
 
 router.post(
-  '/create-user',
+  "/create-user",
   // verifyToken,
   // allowRoles(['ADMIN', 'SUPERADMIN']),
-  tryCatch(addUser),
+  tryCatch(addUser)
 );
 
 router.post(
-  '/remove-user/:id',
+  "/remove-user/:id",
   verifyToken,
-  allowRoles(['ADMIN', 'SUPERADMIN']),
-  tryCatch(removeUser),
+  allowRoles(["ADMIN", "SUPERADMIN"]),
+  tryCatch(removeUser)
 );
 
 router.post(
-  '/modify-user/:id',
+  "/modify-user/:id",
   verifyToken,
-  allowRoles(['ADMIN', 'SUPERADMIN']),
-  tryCatch(updateUser),
+  allowRoles(["ADMIN", "SUPERADMIN"]),
+  tryCatch(updateUser)
 );
 
-router.post('/login', loginUser);
+router.post("/login", tryCatch(loginUser));
 
 export default router;

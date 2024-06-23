@@ -1,12 +1,12 @@
 // Example Express route using the product DAL
-import Express from 'express';
-import { tryCatch } from '../utils/functions.js';
+import Express from "express";
+import { tryCatch } from "../utils/functions.js";
 import {
   addProduct,
   getAllProducts,
   getProductById,
   editProduct,
-} from '../controllers/product.js';
+} from "../controllers/product.js";
 
 const router = Express.Router();
 
@@ -18,10 +18,10 @@ const router = Express.Router();
 //         res.status(500).json({ message: "Error fetching products" });
 //     }
 // });
-router.post('/create-product', tryCatch(addProduct));
-router.post('/modify-product/:id', tryCatch(editProduct));
+router.post("/create-product", tryCatch(addProduct));
+router.post("/modify-product/:id", tryCatch(editProduct));
 
-router.get('/products', tryCatch(getAllProducts));
-router.get('/products/:id', tryCatch(getProductById));
+router.get("/products", tryCatch(getAllProducts));
+router.get("/products/:id", tryCatch(getProductById));
 
 export default router;

@@ -1,19 +1,25 @@
-import productDAL from '../dal/product.js';
+import productDAL from "../dal/product.js";
 
-async function listAllProducts() {
-  return await productDAL.getAllProducts();
-}
+const listAllProducts = async () => {
+  const listProductsTemp = await productDAL.getAllProducts();
+  const productList = listProductsTemp.map((product) => {
+    let totalProductCount = 0;
+    product?.batches?.forEach((batch) => {
+      totalProductCount += batch.quantity;
+    });
+    return { ...product, totalProductCount };
+  });
+  return productList;
+};
 
-async function findProductById(id) {
-  return await productDAL.getProductById(id);
-}
+const findProductById = async (id) => productDAL.getProductById(id);
 
 async function createNewProduct(productData) {
-  return await productDAL.createProduct(productData);
+  return productDAL.createProduct(productData);
 }
 
 async function modifyProduct(id, productData) {
-  return await productDAL.updateProduct(id, productData);
+  return productDAL.updateProduct(id, productData);
 }
 
 async function removeProduct(id) {

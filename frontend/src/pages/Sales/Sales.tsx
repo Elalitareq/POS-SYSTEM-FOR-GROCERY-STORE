@@ -8,12 +8,17 @@ import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import FolderIcon from "@mui/icons-material/Folder";
-import { getAllProduct } from "../../utils/apisRequest";
+import { addBill, getAllProduct } from "../../utils/apisRequest";
 import { LoaderContext } from "../../layout";
 import DataTable from "../../components/dataTable/DataGrid";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { Button, TextField } from "@mui/material";
-import { LineAxis, PlusOne } from "@mui/icons-material";
+import {
+  DeleteOutline,
+  DeleteOutlineOutlined,
+  LineAxis,
+  PlusOne,
+} from "@mui/icons-material";
 import Delete from "../../components/buttons/Delete";
 
 interface ProductObject {
@@ -25,8 +30,13 @@ interface ProductObject {
   synced: boolean;
   quantity: number;
   salePrice: number;
-  category: any;
   action: any;
+  regularPrice: number;
+  category: {
+    name: string;
+
+    id: number;
+  };
 }
 
 interface Product {
@@ -36,14 +46,14 @@ interface Product {
   Category: any;
   quantity: number;
   salePrice: number;
+  regularPrice: number;
 }
 
 export default function InteractiveList() {
   const [dense, setDense] = useState(false);
-  const [secondary, setSecondary] = useState(false);
   const [dataProduct, setDataProduct] = useState([]);
-  const [productSelected, setProductSelected] = useState<Product[]>([]);
-  const [searchedProduct, setSearchedProduct] = useState("");
+  const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+  const [searchedProduct, setSearchedProducts] = useState("");
 
   const isLoad = useContext(LoaderContext);
 
@@ -67,52 +77,17 @@ export default function InteractiveList() {
     fetchData();
   }, []);
 
-  const handleIncrementQuantity = (row: any) => {
-    const index = productSelected.findIndex(
-      (product: Product) => product.sku === row.sku
+  function handelDeleteProduct(id: number) {
+    setSelectedProducts((oldProducts) =>
+      oldProducts.filter((product) => product.id !== id)
     );
-    const findInitialPrice: any = dataProduct.find(
-      (product: ProductObject) => product.sku === row.sku
-    );
-    setProductSelected((prev) =>
-      prev.map((product, i) =>
-        i === index
-          ? {
-              ...product,
-              quantity: product.quantity + 1,
-              salePrice: parseFloat(
-                (product.salePrice + findInitialPrice.salePrice).toFixed(2)
-              ),
-            }
-          : product
-      )
-    );
-  };
+  }
 
-  const handleDecrementQuantity = (row: any) => {
-    const index = productSelected.findIndex(
-      (product: Product) => product.sku === row.sku
-    );
-    const findInitialPrice: any = dataProduct.find(
-      (product: ProductObject) => product.sku === row.sku
-    );
-    setProductSelected((prev) =>
-      prev.map((product, i) =>
-        i === index
-          ? {
-              ...product,
-              quantity: Math.max(1, product.quantity - 1),
-              salePrice: Math.max(
-                findInitialPrice.salePrice,
-                parseFloat(
-                  (product.salePrice - findInitialPrice.salePrice).toFixed(2)
-                )
-              ),
-            }
-          : product
-      )
-    );
-  };
+  async function handelCashOut() {
+    await addBill(selectedProducts).then(() => {
+      setSelectedProducts([]);
+    });
+  }
 
   const columns: GridColDef<ProductObject>[] = [
     {
@@ -129,51 +104,46 @@ export default function InteractiveList() {
       field: "category",
       headerName: "فئة",
       width: 100,
-      renderCell: ({ row }) => {
-        return <> {row.category.name} </>;
-      },
+      valueGetter: (_, row) => row.category?.name,
     },
     {
       field: "quantity",
       headerName: "الكمية",
       width: 150,
 
-      renderCell: ({ row }) => {
-        return (
-          <div style={{ display: "flex", gap: "20px" }}>
-            {" "}
-            <div
-              style={{ fontSize: "20px", cursor: "pointer" }}
-              onClick={() => handleIncrementQuantity(row)}
-            >
-              +
-            </div>{" "}
-            <div> {row.quantity} </div>{" "}
-            <div
-              style={{ fontSize: "20px", cursor: "pointer" }}
-              onClick={() => handleDecrementQuantity(row)}
-            >
-              -
-            </div>{" "}
-          </div>
-        );
-      },
+      editable: true,
+      type: "number",
     },
     {
-      field: "salePrice",
-      headerName: "سعر البيع",
+      field: "regularPrice",
+      headerName: "السعر",
       width: 100,
+      editable: true,
+      type: "number",
+    },
+
+    {
+      field: "totalPrice",
+      headerName: "السعر الكلي",
+      type: "number",
+      width: 100,
+      valueGetter: (_, row) => {
+        return row.quantity * row.regularPrice;
+      },
     },
     {
       field: "action",
       headerName: "حذف",
       width: 150,
-      renderCell: ({ row }) => (
-        <>
-          {" "}
-          <Delete />
-        </>
-      ),
+      type: "actions",
+      getActions: ({ row }) => [
+        <GridActionsCellItem
+          icon={<Delete />}
+          label="Delete"
+          color="inherit"
+          onClick={() => handelDeleteProduct(row.id)}
+        />,
+      ],
     },
     // {
     //     field: "costPrice",
@@ -200,38 +170,28 @@ export default function InteractiveList() {
   };
 
   const handleSelectedProduct = (product: Product) => {
-    const { id, name, Category, sku, salePrice } = product;
-    const index = productSelected.findIndex(
-      (eachProduct) => eachProduct.sku === sku
-    );
-    if (index !== -1) {
-      const updatedProduct = {
-        ...productSelected[index],
-        quantity: productSelected[index].quantity + 1,
-        salePrice: parseFloat(
-          (
-            (productSelected[index].salePrice /
-              productSelected[index].quantity) *
-            (productSelected[index].quantity + 1)
-          ).toFixed(2)
-        ),
-      };
+    console.log(product);
+    const productId = product.id;
 
-      setProductSelected((prev) => {
-        const updatedProducts = [...prev];
-        updatedProducts[index] = updatedProduct;
+    const productIndex = selectedProducts.findIndex(
+      (product) => product.id === productId
+    );
+    console.log(productIndex);
+
+    if (productIndex !== -1) {
+      setSelectedProducts((oldProducts) => {
+        const updatedProducts = [...oldProducts];
+        updatedProducts[productIndex].quantity += 1;
         return updatedProducts;
       });
     } else {
-      const selected: any = {
-        id: id,
-        name: name,
-        sku: sku,
-        category: Category,
-        salePrice: salePrice,
-        quantity: 1,
-      };
-      setProductSelected((prev) => [...prev, selected]);
+      setSelectedProducts((oldProducts) => [
+        ...oldProducts,
+        {
+          ...product,
+          quantity: 1,
+        },
+      ]);
     }
   };
 
@@ -250,11 +210,25 @@ export default function InteractiveList() {
           <Typography sx={{ mt: 2, mb: 2 }} variant="h6" component="div">
             الفاتورة
           </Typography>
-          <Button variant="contained" sx={{ height: "max-content" }}>
+          <Button
+            onClick={() => handelCashOut()}
+            variant="contained"
+            sx={{ height: "max-content" }}
+          >
             سحب الفاتورة
           </Button>
         </Box>
-        <DataTable columns={columns} rows={productSelected} />
+        <DataTable
+          columns={columns}
+          rows={selectedProducts}
+          onRowEdit={(id, newRow) => {
+            setSelectedProducts((oldProducts) =>
+              oldProducts.map((product) =>
+                product.id === id ? newRow : product
+              )
+            );
+          }}
+        />
       </Grid>
       <Grid container sx={{ width: "300px" }} spacing={2}>
         <Grid item sx={{ width: "300px" }}>
@@ -267,7 +241,7 @@ export default function InteractiveList() {
             id="standard-basic"
             label="بحث"
             variant="standard"
-            onChange={(e: any) => setSearchedProduct(e.target.value)}
+            onChange={(e: any) => setSearchedProducts(e.target.value)}
           />
 
           <List dense={dense}>
@@ -286,7 +260,7 @@ export default function InteractiveList() {
                       bgcolor: "#ededed",
                     }}
                     primary={product.name}
-                    secondary={secondary ? "Secondary text" : null}
+                    secondary={product.inventoryCount}
                   />
                 </ListItem>
               )
