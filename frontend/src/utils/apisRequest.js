@@ -5,7 +5,7 @@ const url = process.env.REACT_APP_API_URL;
 // User APIS
 
 export async function getAllUsers() {
-    const getUser = await axios.get(url + "/api/users/user");
+    const getUser = await axios.get(url + "/api/users/users");
     return getUser.data;
 }
 
@@ -121,5 +121,11 @@ export async function modifyBatch(id, data) {
 
 export async function addBill(data) {
     const addBill = await axios.post(url + "/api/sales/create-bill", data);
+    return addBill.data;
+}
+
+// actions
+export async function getAllAction(data) {
+    const addBill = await axios.get(url + "/api/actions/actions", data);
     return addBill.data;
 }

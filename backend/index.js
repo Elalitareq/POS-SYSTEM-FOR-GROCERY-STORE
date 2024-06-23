@@ -6,6 +6,7 @@ import userRoutes from "./src/api/user.js";
 import categoryRoutes from "./src/api/category.js";
 import errorHandler from "./src/middleware/errorHandler.js";
 import batchRoutes from "./src/api/batch.js";
+import actionsRoutes from "./src/api/action.js";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/batches", batchRoutes);
 app.use("/api/printers", batchRoutes);
 app.use("/api/sales", salesRoutes);
+app.use("/api/actions", actionsRoutes);
 
 // Error handling middleware
 app.use(errorHandler);
