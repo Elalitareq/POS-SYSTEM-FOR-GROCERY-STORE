@@ -13,6 +13,7 @@ import useApiRequests from "../../hooks/useApiRequests";
 interface ActionObject {
   id: number;
   name: string;
+  user: { userName: string };
   description?: { ar: string; en: string };
   actionType: string;
   lastModified: string;
@@ -43,11 +44,13 @@ function Action() {
   }, []);
 
   const columns: GridColDef<ActionObject>[] = [
-    // {
-    //     field: "name",
-    //     headerName: "الاسم",
-    //     width: 200,
-    // },
+    {
+      field: "user.userName",
+      headerName: "اسم المستخدم",
+      width: 200,
+      valueGetter: (_, row) => row.user.userName,
+    },
+
     {
       field: "description",
       headerName: "شرح",

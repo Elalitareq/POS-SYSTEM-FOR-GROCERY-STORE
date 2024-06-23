@@ -27,6 +27,7 @@ function EditProduct() {
     costPrice: "",
     wholesalePrice: "",
     categoryId: "",
+    batches: [],
   });
 
   useEffect(() => {
@@ -66,7 +67,8 @@ function EditProduct() {
           variant: "error",
         });
       } else {
-        const dataAdded = await modifyProduct(ID, editData);
+        const { batches, ...rest } = editData;
+        const dataAdded = await modifyProduct(ID, rest);
         if (dataAdded) {
           enqueueSnackbar({
             message: "تم التعديل بنجاح .",
@@ -77,7 +79,7 @@ function EditProduct() {
     } catch (error: any) {
       enqueueSnackbar({
         message: error.response.data.message,
-        variant: "success",
+        variant: "error",
       });
     }
   }

@@ -123,7 +123,6 @@ const useApiRequests = () => {
         authorization: authHeader,
       },
     });
-    console.log(response.data);
     return response.data;
   }
 
