@@ -6,6 +6,7 @@ import userRoutes from "./src/api/user.js";
 import categoryRoutes from "./src/api/category.js";
 import errorHandler from "./src/middleware/errorHandler.js";
 import batchRoutes from "./src/api/batch.js";
+import { verifyToken } from "./src/middleware/userPermission.js";
 
 const app = express();
 
@@ -15,12 +16,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use("/api/products", productRoutes);
+app.use("/api/products", verifyToken, productRoutes);
+app.use("/api/categories", verifyToken, categoryRoutes);
+app.use("/api/batches", verifyToken, batchRoutes);
+app.use("/api/printers", verifyToken, batchRoutes);
+app.use("/api/sales", verifyToken, salesRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/categories", categoryRoutes);
-app.use("/api/batches", batchRoutes);
-app.use("/api/printers", batchRoutes);
-app.use("/api/sales", salesRoutes);
 
 // Error handling middleware
 app.use(errorHandler);
