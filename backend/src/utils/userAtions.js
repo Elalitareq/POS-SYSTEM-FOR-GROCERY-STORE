@@ -54,6 +54,7 @@ const keyMapper = {
     // Enum SaleType
     WHOLESALE: "بيع بالجملة",
     REGULAR: "بيع عادي",
+
 };
 
 const keyMapperEnglish = {
@@ -115,6 +116,29 @@ const keyMapperEnglish = {
     WHOLESALE: "Wholesale",
     REGULAR: "Regular",
 };
+export const getArrayOfObjectAddInArabicAndEnglish = (addObjects) => {
+    const changesInArabic = [];
+    const changesInEnglish = [];
+
+    addObjects.forEach(addObject => {
+        for (const key in addObject) {
+            if (key !== "lastModified") {
+                const change = {
+                    key,
+                    newValue: addObject[key],
+                };
+                changesInArabic.push(`${keyMapper[change.key]} : ${change.newValue}`);
+                changesInEnglish.push(`${keyMapperEnglish[change.key]} : ${change.newValue}`);
+            }
+        }
+    });
+
+    return {
+        ar: changesInArabic.join("\n"),
+        en: changesInEnglish.join("\n"),
+    };
+};
+
 
 export const getObjectAddInArabicAndEnglish = (addObject) => {
     const changes = [];

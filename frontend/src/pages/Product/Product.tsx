@@ -85,7 +85,7 @@ function Product() {
             headerName: "فئة",
             width: 100,
             renderCell: ({ row }) => {
-                return <> {row.Category.name} </>;
+                return <> {row.Category?.name} </>;
             },
         },
         {
