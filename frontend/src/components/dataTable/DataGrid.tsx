@@ -69,8 +69,10 @@ function DataTable({
           disableRowSelectionOnClick
           {...(onRowEdit
             ? {
-                onRowEditStop: (newRow, oldRow: any) =>
-                  onRowEdit(oldRow?.id, newRow),
+                processRowUpdate: (newRow: any, oldRow: any) => {
+                  console.log(oldRow?.id, newRow);
+                  onRowEdit(oldRow?.id, newRow);
+                },
               }
             : {})}
         />

@@ -45,6 +45,17 @@ async function incrementOrDecrementProductCount(productId, change) {
     },
   });
 }
+async function incrementOrDecrementProductSoldCount(productId, change) {
+  const product = await prisma.product.findUnique({
+    where: { id: productId },
+  });
+  await prisma.product.update({
+    where: { id: productId },
+    data: {
+      soldCount: product.soldCount + change,
+    },
+  });
+}
 
 async function deleteProduct(id) {
   const productId = parseInt(id);
@@ -60,6 +71,7 @@ const productDAL = {
   updateProduct,
   deleteProduct,
   incrementOrDecrementProductCount,
+  incrementOrDecrementProductSoldCount,
 };
 
 export default productDAL;

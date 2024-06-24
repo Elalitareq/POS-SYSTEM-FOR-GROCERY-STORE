@@ -83,9 +83,13 @@ export default function InteractiveList() {
   }
 
   async function handelCashOut() {
-    await addBill(selectedProducts).then(() => {
-      setSelectedProducts([]);
-    });
+    try {
+      console.log(selectedProducts);
+      const response = await addBill(selectedProducts);
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   const columns: GridColDef<ProductObject>[] = [
@@ -219,6 +223,7 @@ export default function InteractiveList() {
           columns={columns}
           rows={selectedProducts}
           onRowEdit={(id, newRow) => {
+            console.log(id, newRow);
             setSelectedProducts((oldProducts) =>
               oldProducts.map((product) =>
                 product.id === id ? newRow : product
