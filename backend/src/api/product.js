@@ -2,10 +2,11 @@
 import Express from "express";
 import { tryCatch } from "../utils/functions.js";
 import {
-  addProduct,
-  getAllProducts,
-  getProductById,
-  editProduct,
+    addProduct,
+    getAllProducts,
+    getProductById,
+    editProduct,
+    deleteProduct,
 } from "../controllers/product.js";
 
 const router = Express.Router();
@@ -23,5 +24,6 @@ router.post("/modify-product/:id", tryCatch(editProduct));
 
 router.get("/products", tryCatch(getAllProducts));
 router.get("/products/:id", tryCatch(getProductById));
+router.post("/remove-product/:id", tryCatch(deleteProduct));
 
 export default router;
