@@ -40,6 +40,7 @@ function DataTable({
           </Button>
         </Box>
       )}
+
       <Box sx={{ flexGrow: 1 }}>
         <DataGrid
           {...(!isRowHeightDisabled

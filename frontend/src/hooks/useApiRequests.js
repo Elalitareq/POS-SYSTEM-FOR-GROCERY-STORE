@@ -101,6 +101,19 @@ const useApiRequests = () => {
     );
     return modifyCategory.data;
   }
+  async function deleteCategory(id) {
+    const removeProduct = await axios.post(
+      url + "/api/categories/remove-category/" + id,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: authHeader,
+        },
+      }
+    );
+    return removeProduct.data;
+  }
 
   //product APIS
   async function addProduct(data) {
@@ -149,7 +162,19 @@ const useApiRequests = () => {
     );
     return modifyProduct.data;
   }
-
+  async function deleteProduct(id) {
+    const removeProduct = await axios.post(
+      url + "/api/products/remove-product/" + id,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: authHeader,
+        },
+      }
+    );
+    return removeProduct.data;
+  }
   //batch
 
   async function addBatch(data) {
@@ -217,6 +242,15 @@ const useApiRequests = () => {
     });
     return addBill.data;
   }
+  async function getTransactionById(id) {
+    const response = await axios.get(url + "/api/sales/transaction/" + id, {
+      headers: {
+        "Content-Type": "application/json",
+        authorization: authHeader,
+      },
+    });
+    return response.data;
+  }
 
   return {
     authHeader,
@@ -238,6 +272,9 @@ const useApiRequests = () => {
     modifyBatch,
     addBill,
     getAllAction,
+    deleteProduct,
+    deleteCategory,
+    getTransactionById,
   };
 };
 export default useApiRequests;

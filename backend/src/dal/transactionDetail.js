@@ -1,4 +1,4 @@
-import prisma from '../utils/prisma';
+import prisma from "../utils/prisma.js";
 
 async function getAllTransactionDetails() {
   return await prisma.transactionDetail.findMany({

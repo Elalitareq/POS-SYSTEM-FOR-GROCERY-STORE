@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Layout from "./layout";
 import Dashboard from "./pages/Dashboard";
@@ -22,6 +22,7 @@ import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
 import { SnackbarProvider } from "notistack";
 import Sales from "./pages/Sales/Sales";
 import "./App.css";
+import SingleTransaction from "./pages/Transaction/singleTransaction";
 
 function App() {
   return (
@@ -48,7 +49,10 @@ function App() {
               path="transaction-details"
               element={<TransactionDetails />}
             />
-            <Route path="transactions" element={<Transaction />} />
+            <Route path="transactions" element={<Outlet />}>
+              <Route index element={<Transaction />} />
+              <Route path=":id" element={<SingleTransaction />} />
+            </Route>
             <Route path="users" element={<UserIndex />}>
               <Route index element={<User />} />
               <Route path="add-users" element={<AddUser />} />

@@ -2,14 +2,22 @@ import prisma from "../utils/prisma.js";
 
 async function getAllTransactions() {
   return await prisma.transaction.findMany({
-    include: { details: true }, // Include transaction details by default
+    include: {
+      details: {
+        include: { product: true },
+      },
+    }, // Include transaction details by default
   });
 }
 
 async function getTransactionById(id) {
   return await prisma.transaction.findUnique({
-    where: { id },
-    include: { details: true }, // Include transaction details
+    where: { id: Number(id) },
+    include: {
+      details: {
+        include: { product: true }, // Include product in transaction details
+      },
+    },
   });
 }
 

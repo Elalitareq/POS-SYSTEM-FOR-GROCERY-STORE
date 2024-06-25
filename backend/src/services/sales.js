@@ -1,6 +1,8 @@
 import { SaleType } from "@prisma/client";
 import productDAL from "../dal/product.js";
 import transactionDAL from "../dal/transaction.js";
+import transactionDetailDAL from "../dal/transactionDetail.js";
+import { asyncForEach } from "../utils/functions.js";
 
 async function createBill(bill) {
   // [
@@ -44,12 +46,32 @@ async function createBill(bill) {
 
   console.log(totalAmount);
 
-  return await transactionDAL.createTransaction({
+  const transaction = await transactionDAL.createTransaction({
     totalAmount,
-    SaleType: SaleType.REGULAR,
+    saleType: SaleType.REGULAR,
   });
+
+  await asyncForEach(bill, (product) => {
+    transactionDetailDAL.createTransactionDetail({
+      transactionId: transaction.id,
+      productId: product.id,
+      quantity: product.quantity,
+      priceAtTimeOfSale: product.regularPrice,
+    });
+  });
+  return transaction;
 }
 
-const saleServices = { createBill };
+async function getBillById(id) {
+  const bill = await transactionDAL.getTransactionById(id);
+  return bill;
+}
+
+async function getAllBills() {
+  const bills = await transactionDAL.getAllTransactions();
+  return bills;
+}
+
+const saleServices = { createBill, getBillById, getAllBills };
 
 export default saleServices;

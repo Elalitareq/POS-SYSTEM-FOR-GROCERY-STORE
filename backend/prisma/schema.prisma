@@ -73,10 +73,9 @@ enum SaleType {
 }
 
 model Transaction {
-  id          Int      @id @default(autoincrement())
-  date        DateTime @default(now())
-  totalAmount Float
-
+  id           Int                 @id @default(autoincrement())
+  date         DateTime            @default(now())
+  totalAmount  Float
   saleType     SaleType
   details      TransactionDetail[]
   lastModified DateTime            @default(now())
@@ -99,6 +98,7 @@ model Action {
   updatedAt    DateTime @updatedAt
   userId       Int
   user         User?    @relation(fields: [userId], references: [id])
+  title        String?
   description  Json
   actionType   String // For example, "CREATE", "UPDATE", "DELETE"
   lastModified DateTime @default(now())

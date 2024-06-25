@@ -3,8 +3,6 @@ import { GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import Delete from "../../components/buttons/Delete";
 import Edit from "../../components/buttons/Edit";
 import { useNavigate } from "react-router-dom";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DataTable from "../../components/dataTable/DataGrid";
 import { LoaderContext } from "../../layout";
 import { useContext, useState, useEffect } from "react";
@@ -13,6 +11,7 @@ import Modal from "../../components/modal/Modal";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { enqueueSnackbar } from "notistack";
 import useApiRequests from "../../hooks/useApiRequests";
+import Dialog from "../../components/Dialog";
 
 interface ProductObject {
   id: number;
@@ -21,17 +20,24 @@ interface ProductObject {
   lastModified: string;
   Category: any;
   totalProductCount?: number;
+  inventoryCount: number;
+  soldCount: number;
 }
 
 function Product() {
-  const { getAllProduct, addBatch } = useApiRequests();
+  const { getAllProduct, addBatch, deleteProduct } = useApiRequests();
   const navigate = useNavigate();
 
   const { id }: number | any = useAuthUser();
 
-  const [dataProduct, setDataProduct] = useState(null);
+  const [dataProduct, setDataProduct] = useState([]);
 
   const [openModal, setOpenModal] = useState(false);
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(
+    null
+  );
 
   const [headerOfTheModal, setHeaderOfTheModal] = useState("");
 
@@ -40,8 +46,6 @@ function Product() {
   });
 
   const isLoad = useContext(LoaderContext);
-
-  // fetch data with tostify
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,13 +87,21 @@ function Product() {
       headerName: "فئة",
       width: 100,
       renderCell: ({ row }) => {
-        return <> {row.Category.name} </>;
+        return <> {row.Category?.name} </>;
       },
     },
     {
       field: "inventoryCount",
-      headerName: "عدد الجردات",
+      headerName: "العدد الكلي",
       width: 120,
+    },
+    {
+      field: "soldCount",
+      headerName: "العدد المتبقي",
+      width: 120,
+      valueGetter: (_, row) => {
+        return row.inventoryCount - row.soldCount;
+      },
     },
     {
       field: "regularPrice",
@@ -137,6 +149,7 @@ function Product() {
               color="inherit"
             />
             <GridActionsCellItem
+              onClick={() => handleDeleteProduct(row.id)}
               icon={<Delete />}
               label="Delete"
               color="inherit"
@@ -160,8 +173,6 @@ function Product() {
       },
     },
   ];
-
-  // fields for the batch MODAL
 
   const fields = [
     {
@@ -189,8 +200,6 @@ function Product() {
       require: true,
     },
   ];
-
-  // handel submit of the Batch MOdall
 
   async function handleSubmit(e: any) {
     e.preventDefault();
@@ -227,6 +236,37 @@ function Product() {
   };
   const handelOpenModal = () => setOpenModal(true);
 
+  function handleDeleteProduct(id: number) {
+    setSelectedProductId(id);
+    setOpenDialog(true);
+  }
+
+  const handleConfirmationDelete = async (e: any) => {
+    e.preventDefault();
+    if (selectedProductId !== null) {
+      try {
+        await deleteProduct(selectedProductId);
+        enqueueSnackbar({
+          message: "تم حذف المنتج بنجاح.",
+          variant: "success",
+        });
+        setDataProduct(
+          dataProduct.filter(
+            (product: ProductObject) => product.id !== selectedProductId
+          )
+        );
+      } catch (error) {
+        enqueueSnackbar({
+          message: "حدث خطأ أثناء حذف المنتج.",
+          variant: "error",
+        });
+      } finally {
+        setOpenDialog(false);
+        setSelectedProductId(null);
+      }
+    }
+  };
+
   return (
     <Box>
       <Modal
@@ -237,6 +277,14 @@ function Product() {
         setData={setBatch}
         handleCloseModal={handleCloseModal}
         headerTextOfTheModal={`زيادة الكمية للمنتج ${headerOfTheModal}`}
+      />
+      <Dialog
+        openModel={openDialog}
+        handleCloseModal={() => setOpenDialog(false)}
+        onClick={(e: any) => {
+          handleConfirmationDelete(e);
+        }}
+        bodyModal="هل أنت متأكد من أنك تريد حذف هذا المنتج؟"
       />
 
       {dataProduct !== null && (

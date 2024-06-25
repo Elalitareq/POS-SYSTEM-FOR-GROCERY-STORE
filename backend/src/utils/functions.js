@@ -6,6 +6,12 @@ export const tryCatch = (fn) => async (req, res, next) => {
   }
 };
 
+export const asyncForEach = async (array, callback) => {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+};
+
 export const makeError = (message, statusCode) => {
   const error = new Error(message);
   error.statusCode = statusCode;

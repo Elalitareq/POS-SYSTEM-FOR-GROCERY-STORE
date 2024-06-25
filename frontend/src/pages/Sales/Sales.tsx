@@ -20,6 +20,7 @@ import {
 } from "@mui/icons-material";
 import Delete from "../../components/buttons/Delete";
 import useApiRequests from "../../hooks/useApiRequests";
+import { useNavigate } from "react-router-dom";
 
 interface ProductObject {
   id: number;
@@ -46,15 +47,18 @@ interface Product {
   quantity: number;
   salePrice: number;
   regularPrice: number;
+  totalAmount: number;
 }
 
 export default function InteractiveList() {
   const { getAllProduct, addBill } = useApiRequests();
+  const navigate = useNavigate();
   const [dense, setDense] = useState(false);
   const [dataProduct, setDataProduct] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
   const [searchedProduct, setSearchedProducts] = useState("");
 
+  console.log(selectedProducts);
   const isLoad = useContext(LoaderContext);
 
   useEffect(() => {
@@ -75,22 +79,6 @@ export default function InteractiveList() {
     };
     fetchData();
   }, []);
-
-  function handelDeleteProduct(id: number) {
-    setSelectedProducts((oldProducts) =>
-      oldProducts.filter((product) => product.id !== id)
-    );
-  }
-
-  async function handelCashOut() {
-    try {
-      console.log(selectedProducts);
-      const response = await addBill(selectedProducts);
-      console.log(response);
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
   const columns: GridColDef<ProductObject>[] = [
     {
@@ -175,26 +163,48 @@ export default function InteractiveList() {
   const handleSelectedProduct = (product: Product) => {
     const productId = product.id;
 
-    const productIndex = selectedProducts.findIndex(
-      (product) => product.id === productId
-    );
+    setSelectedProducts((oldProducts) => {
+      const productIndex = oldProducts.findIndex(
+        (existingProduct) => existingProduct.id === productId
+      );
 
-    if (productIndex !== -1) {
-      setSelectedProducts((oldProducts) => {
+      if (productIndex !== -1) {
         const updatedProducts = [...oldProducts];
-        updatedProducts[productIndex].quantity += 1;
+        const updatedProduct = {
+          ...updatedProducts[productIndex],
+          quantity: updatedProducts[productIndex].quantity + 1,
+          totalAmount:
+            (updatedProducts[productIndex].quantity + 1) * product.regularPrice,
+        };
+        updatedProducts[productIndex] = updatedProduct;
         return updatedProducts;
-      });
-    } else {
-      setSelectedProducts((oldProducts) => [
-        ...oldProducts,
-        {
-          ...product,
-          quantity: 1,
-        },
-      ]);
-    }
+      } else {
+        return [
+          ...oldProducts,
+          {
+            ...product,
+            quantity: 1,
+            totalAmount: product.regularPrice,
+          },
+        ];
+      }
+    });
   };
+
+  function handelDeleteProduct(id: number) {
+    setSelectedProducts((oldProducts) =>
+      oldProducts.filter((product) => product.id !== id)
+    );
+  }
+
+  async function handelCashOut() {
+    try {
+      const response = await addBill(selectedProducts);
+      navigate("/transactions/" + response.transaction.id);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <Box
@@ -223,10 +233,14 @@ export default function InteractiveList() {
           columns={columns}
           rows={selectedProducts}
           onRowEdit={(id, newRow) => {
-            console.log(id, newRow);
             setSelectedProducts((oldProducts) =>
               oldProducts.map((product) =>
-                product.id === id ? newRow : product
+                product.id === id
+                  ? {
+                      ...newRow,
+                      totalAmount: newRow.quantity * newRow.regularPrice,
+                    }
+                  : product
               )
             );
           }}
